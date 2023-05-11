@@ -1,3 +1,6 @@
+-- Manifest for Spark.
+-- Made and maintained by frackz
+
 fx_version 'cerulean'
 game 'gta5'
 
@@ -11,6 +14,8 @@ shared_scripts {
 }
 
 server_scripts {
+    'server/Spark.lua',
+    'server/HTTP.lua',
     'server/Version.lua'
 }
 

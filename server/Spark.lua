@@ -3,6 +3,7 @@
 
 Spark = {}
 
+--- Exports the Spark table
 exports('Spark', function()
     return Spark
 end)
