@@ -14,7 +14,7 @@ function HTTP:Perform(url, method, data, headers)
 
     PerformHttpRequest(url, function (err, data, _)
         if err ~= 200 then
-            Promise:resolve(err)
+            data = err
         end
 
         Promise:resolve(data)
