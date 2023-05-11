@@ -3,7 +3,7 @@
 
 local Version = {
     Version = 1.0,
-    Request = 'Asdas'
+    Request = 'https://google.com'
 }
 
 --- Get the Version module
