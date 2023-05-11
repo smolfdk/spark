@@ -5,15 +5,15 @@ global.exports('Connection', (options, response) => {
     let invoke = (cb, args) => setImmediate(() => cb(args))
 
     connection.getConnection((err, con) => {
-        if (err) invoke(response, err)
+        if (err) return invoke(response, err.code)
         
-        invoke(response, (sql, params) => {
+        invoke(response, (sql, params, cb) => {
             return new Promise((res, rej) => con.query(sql, params, (error, result) => {
                 if (error) return rej(error)
                 res(result) 
             }))
         })
         
-        connection.releaseConnection(con)
+        con.release()
     })
 })

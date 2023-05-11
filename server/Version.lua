@@ -3,7 +3,7 @@
 
 local Version = {
     Version = 1.0,
-    Request = 'https://google.com'
+    Request = 'https://pastebin.com/raw/sh5zZrmy'
 }
 
 --- Get the Version module
@@ -29,6 +29,9 @@ end
 
 --- Check if the the version is outdated
 CreateThread(function()
+    local Query = Spark:Database():First('SELECT * FROM users WHERE id = ?', 1)
+    print(Query.steam)
+
     if Version:Newest() ~= Version:Get() then -- Outdated version
         return error("This version is outdated! Please download the new version")
     end

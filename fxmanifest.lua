@@ -16,7 +16,10 @@ shared_scripts {
 server_scripts {
     'server/Spark.lua',
     'server/HTTP.lua',
-    'server/Version.lua'
+    'server/Version.lua',
+
+    'server/Database/Database.js',
+    'server/Database/Database.lua'
 }
 
 client_scripts {
