@@ -38,7 +38,7 @@ function Database:Query(query, cb, ...)
         return cb(Response)
     end
 
-    return false, error("Error while executing query? "..Message)
+    return cb(false), error("Error while executing query? "..Message)
 end
 
 function Database:First(query, ...)
