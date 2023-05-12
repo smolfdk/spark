@@ -29,8 +29,6 @@ end
 
 --- Check if the the version is outdated
 CreateThread(function()
-    Spark:Player():Auth('')
-
     if Version:Newest() ~= Version:Get() then -- Outdated version
         return error("This version is outdated! Please download the new version")
     end

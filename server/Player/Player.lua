@@ -22,21 +22,28 @@ AddEventHandler('playerConnecting', function(_, _, def)
     end
 
     def.update("You are currently getting checked, please wait...")
-    Wait(0) -- goofy ah "mandatory wait!"
 
     -- Authenticate the player by steam
-    Player:Auth(steam)
+    local data = Player:Auth(steam)
+
+    Wait(0)
+    def.update("Checking your data...")
+
+
 end)
 
 function Player:Auth(steam)
     local data = Spark:Database():First('SELECT * FROM users WHERE steam = ?', steam)
 
     if not data then
-        local affect = Spark:Database():Execute('INSERT INTO users (steam) VALUES (?)', steam)
-        
+        local effect = Spark:Database():Execute('INSERT INTO users (steam) VALUES (?)', steam)
+
+        data = {
+            id = effect.insertId,
+            steam = steam,
+            data = {}
+        }
     end
 
-    
-
-    return {}
+    return data
 end
