@@ -1,5 +1,5 @@
 local Database = {}
-local Query, Promise = nil, promise.new()
+local Query, Execute, Promise = nil, nil, promise.new()
 
 --- Connect to the Database
 exports['Spark']:Connect({ -- insert your data here
@@ -10,12 +10,13 @@ exports['Spark']:Connect({ -- insert your data here
     port = 3306, -- dont touch if you dont know what you're doing
     connectionLimit = 10, -- ^^
     dateStrings = true -- ^^
-}, function(query)
-    if type(query) == "string" then
+}, function(query, execute)
+    if type(query) == "string" or type(execute) == "string" then
         return error("Error when tried to connect to database! "..query)
     end
     
-    Query = query
+    Query, Execute = query, execute
+    Execute('SELECT * FROM users')
     Promise:resolve() -- Resolve so all waiting queries can run
 end)
 
@@ -60,4 +61,20 @@ function Database:Await(query, ...)
     end, ...)
 
     return Citizen.Await(Promise)
+end
+
+function Database:Execute(query, ...)
+    local args = ...
+    if type(...) ~= "table" then
+        args = {...}
+    end
+    
+    local Response = Execute(query, args)
+    local Message = Response.sqlMessage
+
+    if not Message then
+        return Response.result, Response.fields
+    end
+
+    return false, error("Error while executing? "..Message)
 end

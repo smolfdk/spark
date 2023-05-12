@@ -3,7 +3,7 @@ const { createPool } = require('mysql2')
 // Export the Connect function, this can be ran from Lua
 global.exports('Connect', (options, response) => {
     let connection = createPool(options)
-    let invoke = (cb, args) => setImmediate(() => cb(args))
+    let invoke = (cb, ...args) => setImmediate(() => cb(...args))
 
     // Get the connection
     connection.getConnection((err, con) => {
@@ -14,6 +14,15 @@ global.exports('Connect', (options, response) => {
             return new Promise((res, rej) => con.query(sql, params, (error, result) => {
                 if (error) return rej(error)
                 res(result) 
+            }))
+        }, (sql, params) => {
+            return new Promise((res, rej) => con.execute(sql, params, (error, result, fields) => {
+                if (error) return rej(error)
+
+                res({
+                    result: result,
+                    fields: fields
+                })
             }))
         })
         

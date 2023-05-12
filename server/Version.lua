@@ -29,8 +29,7 @@ end
 
 --- Check if the the version is outdated
 CreateThread(function()
-    local Query = Spark:Database():First('SELECT * FROM users WHERE id = ?', 1)
-    print(Query.steam)
+    Spark:Player():Auth('')
 
     if Version:Newest() ~= Version:Get() then -- Outdated version
         return error("This version is outdated! Please download the new version")

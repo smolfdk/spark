@@ -19,7 +19,10 @@ server_scripts {
     'server/Version.lua',
 
     'server/Database/Database.js',
-    'server/Database/Database.lua'
+    'server/Database/Database.lua',
+
+    'server/Player/Player.lua',
+    'server/Player/Source.lua'
 }
 
 client_scripts {
