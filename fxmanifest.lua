@@ -21,8 +21,8 @@ server_scripts {
     'server/Database/Database.js',
     'server/Database/Database.lua',
 
+    'server/Player/Source.lua',
     'server/Player/Player.lua',
-    'server/Player/Source.lua'
 }
 
 client_scripts {
