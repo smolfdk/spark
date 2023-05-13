@@ -10,10 +10,9 @@ function Spark:Player()
     return Player
 end
 
+--- Register the user when they are joining
 AddEventHandler('playerConnecting', function(_, __, def)
-    local source = source
-    if _ == 0 then source = 0 end -- This is just used for debugging
-
+    local source = source and 0
     local steam = Spark:Source():Steam(source)
 
     def.defer()
@@ -23,13 +22,10 @@ AddEventHandler('playerConnecting', function(_, __, def)
         return def.done("Whoops, remember to open steam ;)")
     end
 
+    def.update("Checking your data...")
     local data = Player:Auth(steam) -- Authenticate the player by steam
 
-    Wait(0)
-    def.update("Checking your data...")
-
-    if not data or not data then -- This will check if the returned data is valid
-        Wait(0)
+    if not data or not data.id then -- This will check if the returned data is valid
         return def.done("Error while returning your data, please report this.")
     end
 
@@ -37,6 +33,7 @@ AddEventHandler('playerConnecting', function(_, __, def)
     def.update("You are now logged in as ID: "..data.id) -- Report to the user that they are now logged in
 end)
 
+--- Authenticate a user by steam
 function Player:Auth(steam)
     local data = Spark:Database():First('SELECT * FROM users WHERE steam = ?', steam)
 
@@ -49,7 +46,12 @@ function Player:Auth(steam)
         }
     end
 
-    data['data'] = data['data'] or {}
+    data.data = data.data or {}
+
+    self.Players[steam] = {
+        id = data.id,
+        data = data.data
+    }
 
     return data
 end
