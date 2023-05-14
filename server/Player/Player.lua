@@ -50,7 +50,8 @@ AddEventHandler('playerDropped', function(reason)
     print("User dropped with ID "..data.id.." steam "..steam.." and reason "..reason)
     print("The saved data is: ".."The saved data is: "..json.encode(data.data))
 
-    Player:Dump(steam, data) -- This will dump their data into the database.
+    Player:Dump(steam, data.data) -- This will dump their data into the database.
+    self.Players[steam] = nil -- This will remove them for the players list
 end)
 
 --- Authenticate a user by steam
@@ -72,7 +73,7 @@ function Player:Auth(steam)
 
     -- Insert all data into the players table, this will make life 100x easier
     self.Players[steam] = {
-        id = data.id,
+        id = tostring(data.id),
         data = json.decode(data.data)
     }
 
@@ -83,20 +84,27 @@ end
 function Player:Dump(steam, data)
     assert(data, "User is nil while trying to dump it? Please report this.")
 
-    --- Update user data
-    Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data.data), steam)
-
-    self.Players[steam] = nil
+    -- Update user data to the database
+    Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data), steam)
 end
 
---- Get a user (this is under progress)
-function Player:Get(identifier, value)
-    print(identifier, value)
+--- Check if a user is registered
+function Player:Exist(steam)
+    return Spark:Database():First('SELECT * FROM users WHERE steam = ?', steam) ~= nil
 end
 
 --- Get the raw data of a user, this will contain the player table
 function Player:Raw(steam)
     return self.Players[steam]
+end
+
+--- Convert ID to steam
+function Player:Convert(id)
+    for k,v in pairs(self.Players) do
+        if v.id == id or tonumber(v.id) == id then
+            return k
+        end
+    end
 end
 
 --- This is currently just for testing playerConnecting and playerDropped events.
@@ -112,7 +120,7 @@ CreateThread(function ()
             print("Done - "..text)
         end
     })
-    Wait(3000)
+    --Wait(1000)
 
-    TriggerEvent('playerDropped', 0, 'Debug')
+    --TriggerEvent('playerDropped', 0, 'Debug')
 end)
