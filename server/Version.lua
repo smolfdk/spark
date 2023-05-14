@@ -30,7 +30,7 @@ end
 --- Check if the the version is outdated
 CreateThread(function()
     -- Check if its a outdated version
-    assert(Version:Newest() ~= Version:Get(),
+    assert(Version:Newest() == Version:Get(),
         "This version is outdated! Please download the new version"
     )
 
