@@ -56,7 +56,7 @@ end)
 
 --- Authenticate a user by steam
 function Player:Auth(steam)
-    local data = Spark:Database():First('SELECT * FROM users WHERE steam = ?', steam)
+    local data = self:Pull('steam', steam)
 
     -- If the user does not already exist, this will make create the player.
     if not data then
@@ -88,9 +88,24 @@ function Player:Dump(steam, data)
     Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data), steam)
 end
 
+--- Get user data by steam
+function Player:Data(steam)
+    local data = self:Pull('steam', steam)
+    if not data then
+        return false
+    end
+    
+    return json.decode(data.data or {})
+end
+
+--- Get player data from database.
+function Player:Pull(qoute, steam)
+    return Spark:Database():First('SELECT * FROM users WHERE '..qoute..' = ?', steam)
+end
+
 --- Check if a user is registered
 function Player:Exist(steam)
-    return Spark:Database():First('SELECT * FROM users WHERE steam = ?', steam) ~= nil
+    return self:Pull('steam', steam) ~= nil
 end
 
 --- Get the raw data of a user, this will contain the player table
