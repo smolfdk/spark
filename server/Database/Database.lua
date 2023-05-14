@@ -16,7 +16,6 @@ exports['Spark']:Connect({ -- insert your data here
     end
     
     Query, Execute = query, execute
-    Execute('SELECT * FROM users')
     Promise:resolve() -- Resolve so all waiting queries can run
 end)
 

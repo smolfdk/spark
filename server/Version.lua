@@ -29,9 +29,11 @@ end
 
 --- Check if the the version is outdated
 CreateThread(function()
-    if Version:Newest() ~= Version:Get() then -- Outdated version
-        return error("This version is outdated! Please download the new version")
-    end
+    -- Check if its a outdated version
+    assert(Version:Newest() ~= Version:Get(),
+        "This version is outdated! Please download the new version"
+    )
 
+    -- Prints that its the newest
     print("You are up-to-date!")
 end)
