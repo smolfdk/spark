@@ -137,6 +137,7 @@ function Player:LoadAll()
     end
 end
 
+--- This will load all online users, when Spark gets restarted. This is more for development
 CreateThread(function()
     Player:LoadAll()
 end)
