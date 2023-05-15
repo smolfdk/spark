@@ -17,5 +17,9 @@ function Source:Steam(source)
         return self.Default
     end
 
-    return GetPlayerIdentifier(source, 'steam')
+    for _, v in pairs(GetPlayerIdentifiers(source)) do
+        if string.find(v, 'steam:') then
+            return v:gsub('steam:', "")
+        end
+    end
 end

@@ -12,17 +12,19 @@ end
 
 --- Register the user when they are joining
 AddEventHandler('playerConnecting', function(_, __, def)
-    local source = source and 0
+    local source = source
     local steam = Spark:Source():Steam(source)
 
     def.defer()
     Wait(0)
 
+    print(steam)
     -- Check if steam identifier is valid
     assert(steam, "Whoops, remember to open steam ;)")
 
     def.update("Checking your data...")
     local data = Player:Auth(steam) -- Authenticate the player by steam
+
 
     -- This will check if the returned data is valid
     assert(data or data.id, "Error while returning your data, please report this.")
@@ -30,11 +32,13 @@ AddEventHandler('playerConnecting', function(_, __, def)
     Wait(0)
     def.update("You are now logged in as ID: "..data.id) -- Report to the user that they are now logged in
     print("User logged in with steam "..steam..", id "..data.id.." and with data: "..data.data)
+
+    TriggerEvent('Spark:Connect', steam, def)
 end)
 
 --- Register when a user left, this will save their data
 AddEventHandler('playerDropped', function(reason)
-    local source = source and 0
+    local source = source
     local steam = Spark:Source():Steam(source)
 
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
@@ -42,7 +46,7 @@ AddEventHandler('playerDropped', function(reason)
 
     -- Get the user data that should be saved, to check after things
     local data = Player:Raw(steam)
-    
+
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
 
@@ -51,7 +55,7 @@ AddEventHandler('playerDropped', function(reason)
     print("The saved data is: ".."The saved data is: "..json.encode(data.data))
 
     Player:Dump(steam, data.data) -- This will dump their data into the database.
-    self.Players[steam] = nil -- This will remove them for the players list
+    Player.Players[steam] = nil -- This will remove them for the players list
 end)
 
 --- Authenticate a user by steam
@@ -122,8 +126,23 @@ function Player:Convert(id)
     end
 end
 
+--- This will load all users again. Only use this if player table is empty
+function Player:LoadAll()
+    for _, source in pairs(GetPlayers()) do
+        local data = Player:Auth(Spark:Source():Steam(source))
+        Wait(500)
+        TriggerEvent('Spark:Spawned', source)
+
+        print("Reloaded user "..(data or {}).id)
+    end
+end
+
+CreateThread(function()
+    Player:LoadAll()
+end)
+
 --- This is currently just for testing playerConnecting and playerDropped events.
-CreateThread(function ()
+--[[CreateThread(function ()
     TriggerEvent('playerConnecting', 0, nil, {
         defer = function()
             print("Defered")
@@ -135,7 +154,8 @@ CreateThread(function ()
             print("Done - "..text)
         end
     })
-    --Wait(1000)
+    Wait(100)
 
+    TriggerEvent('Spark:Spawned', 0)
     --TriggerEvent('playerDropped', 0, 'Debug')
-end)
+end)--]]
