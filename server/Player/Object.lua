@@ -191,10 +191,3 @@ RegisterCommand('banme', function(source, args)
     local player = Player:Get('source', source)
     player:Ban(args[1] or 'No reason')
 end)
-
--- Some source testing.
-CreateThread(function()
-    Wait(2000)
-    local player = Player:Get('id', 1)
-    print(player:Get():Source())
-end)
