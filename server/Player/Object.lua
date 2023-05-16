@@ -101,42 +101,60 @@ function Player:Get(identifier, value)
 
     --- Get the is module, this is for checking statements.
     function player:Is()
-        local data = {}
+        local module = {}
 
         --- Check if the user is online
-        function data:Online() return player:Data():Raw() ~= nil end
+        function module:Online() return player:Data():Raw() ~= nil end
 
         --- Check if the user is banned
-        function data:Banned() return player:Data():Get('Banned') ~= nil end
+        function module:Banned() return player:Data():Get('Banned') ~= nil end
 
         --- Check if the user is whitelisted
-        function data:Whitelisted() return player:Data():Get('Whitelisted') or false end
+        function module:Whitelisted() return player:Data():Get('Whitelisted') or false end
 
-        return data
+        return module
     end
 
     --- Get the "get" module. This is for things like ban-reason, id, steam, etc.
     function player:Get()
-        local data = {}
+        local module = {}
 
         --- Get the user's ban reason, will return false if not banned.
-        function data:Ban() return player:Data():Get('Banned') or false end
+        function module:Ban() return player:Data():Get('Banned') or false end
 
         --- Get the user's id, this can be accessed immediately
-        function data:ID() return id end
+        function module:ID() return id end
 
         --- Get the user's steam, this can be accessed immediately
-        function data:Steam() return steam end
+        function module:Steam() return steam end
 
         --- Get the user's source, this can only be accessed after the player has spawned for the first time.
-        function data:Source() return (Player:Raw(steam) or {}).source end
+        function module:Source() return (Player:Raw(steam) or {}).source end
 
-        return data
+        function module:Ped() return GetPlayerPed(self:Source() or 0) end
+
+        return module
     end
 
     --- This will dump user data to the database, only do this if you need to.
     function player:Dump(data)
         return Player:Dump(steam, self:Data():Raw() or data)
+    end
+
+    --- Get the position module
+    function player:Position()
+        local module = {}
+
+        function module:Set(x, y, z)
+            SetEntityCoords(GetPlayerPed(player:Get():Ped(), x, y, z, false, false, false, false))
+        end
+
+        function module:Get()
+            local pos = GetEntityCoords(player:Get():Ped())
+            return pos.x, pos.y, pos.z
+        end
+
+        return module
     end
 
     return player
@@ -170,6 +188,14 @@ RegisterNetEvent('Spark:Spawned', function(_)
 
     print("Player spawned, now updating source")
     Player.Players[player:Get():Steam()].source = source -- Sets the source (needs changing prob)
+
+    TriggerEvent('Spark:Ready', player:Get():Steam())
+
+    -- Set to last position
+    local position = player:Data():Get('Coords')
+    if position then
+        player:Position():Set(position.x, position.y, position.z)
+    end
 end)
 
 -- A debug command for banning
