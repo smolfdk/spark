@@ -62,7 +62,7 @@ function Player:Get(identifier, value)
                 assert(type(user) == "table", "Saved data is not a table?")
 
                 user[key] = value
-                return true, player:Dump()
+                return true, player:Dump(user)
             end
 
             (self:Raw() or {})[key] = value
@@ -104,19 +104,13 @@ function Player:Get(identifier, value)
         local data = {}
 
         --- Check if the user is online
-        function data:Online()
-            return player:Data():Raw() ~= nil
-        end
+        function data:Online() return player:Data():Raw() ~= nil end
 
         --- Check if the user is banned
-        function data:Banned()
-            return player:Data():Get('Banned') ~= nil
-        end
+        function data:Banned() return player:Data():Get('Banned') ~= nil end
 
         --- Check if the user is whitelisted
-        function data:Whitelisted()
-            return player:Data():Get('Whitelisted') or false
-        end
+        function data:Whitelisted() return player:Data():Get('Whitelisted') or false end
 
         return data
     end
@@ -126,31 +120,23 @@ function Player:Get(identifier, value)
         local data = {}
 
         --- Get the user's ban reason, will return false if not banned.
-        function data:Ban()
-            return player:Data():Get('Banned') or false
-        end
+        function data:Ban() return player:Data():Get('Banned') or false end
 
         --- Get the user's id, this can be accessed immediately
-        function data:ID()
-            return id
-        end
+        function data:ID() return id end
 
         --- Get the user's steam, this can be accessed immediately
-        function data:Steam()
-            return steam
-        end
+        function data:Steam() return steam end
 
         --- Get the user's source, this can only be accessed after the player has spawned for the first time.
-        function data:Source()
-            return (Player:Raw(steam) or {}).source
-        end
+        function data:Source() return (Player:Raw(steam) or {}).source end
 
         return data
     end
 
     --- This will dump user data to the database, only do this if you need to.
-    function player:Dump()
-        return Player:Dump(steam, self:Data():Raw())
+    function player:Dump(data)
+        return Player:Dump(steam, self:Data():Raw() or data)
     end
 
     return player
