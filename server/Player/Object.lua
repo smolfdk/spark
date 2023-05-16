@@ -144,7 +144,7 @@ end
 
 --- Connect event, this is after the user has been authenticated, so checks needs to be done
 --- TODO (Make so if you are rejected you will be removed from lists, etc)
-AddEventHandler('Spark:Connect', function(steam, def)
+RegisterNetEvent('Spark:Connect', function(steam, def)
     assert(source == "", "A user tried using the connect event from the client.")
 
     local player = Player:Get('steam', steam)
@@ -156,7 +156,7 @@ AddEventHandler('Spark:Connect', function(steam, def)
 end)
 
 --- When the player has spawned, this is important for getting their source.
-AddEventHandler('Spark:Spawned', function(_)
+RegisterNetEvent('Spark:Spawned', function(_)
     local source = source
     if _ and source == "" then -- Check if the source is "artificially" put in. 
         source = _
