@@ -187,7 +187,8 @@ AddEventHandler('Spark:Spawned', function(_)
 end)
 
 -- A debug command for banning
-RegisterCommand('banme', function(source, args)
-    local player = Player:Get('source', source)
-    player:Ban(args[1] or 'No reason')
+RegisterCommand('ban', function(_, args)
+    local player = Player:Get('id', args[1])
+    player:Ban(args[2] or 'No reason')
+    print("BAN")
 end)

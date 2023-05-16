@@ -28,7 +28,7 @@ server_scripts {
 }
 
 client_scripts {
-    
+    'client/Events.lua'
 }
 
 lua54 'yes'

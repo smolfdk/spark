@@ -128,10 +128,10 @@ end
 
 --- This will load all users again. Only use this if player table is empty
 function Player:LoadAll()
-    for _, source in pairs(GetPlayers()) do
-        local data = Player:Auth(Spark:Source():Steam(source))
+    for _, source in pairs(GetPlayers()) do -- Loop all users
+        local data = Player:Auth(Spark:Source():Steam(source)) -- Authenticate them
         Wait(500)
-        TriggerEvent('Spark:Spawned', source)
+        TriggerEvent('Spark:Spawned', source) -- Run the spawned event, so it will "load" the user
 
         print("Reloaded user "..(data or {}).id)
     end
