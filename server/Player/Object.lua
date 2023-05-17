@@ -68,6 +68,19 @@ function Player:Get(identifier, value)
             (self:Raw() or {})[key] = value
         end
 
+        function data:Extend(data)
+            if not player:Is():Online() then -- If the user is online, we use database.
+                local user = Player:Data(steam)
+                assert(user, "User does not exist?")
+                assert(type(user) == "table", "Saved data is not a table?")
+
+                for k,v in pairs(data) do user[k] = v end
+                return true, player:Dump(user)
+            end
+
+            for k,v in pairs(data) do self:Raw()[k] = v end
+        end
+
         return data
     end
 
@@ -194,8 +207,21 @@ RegisterNetEvent('Spark:Spawned', function(_)
     -- Set to last position
     local position = player:Data():Get('Coords')
     if position then
+        print("Set position. ")
+        print(json.encode(position))
         player:Position():Set(position.x, position.y, position.z)
     end
+end)
+
+RegisterNetEvent('Spark:Dropped', function(steam)
+    assert(source == "", "A user tried using the dropped event from the client.")
+
+    local player = Player:Get('steam', steam)
+    local x, y, z = player:Position():Get()
+    print("EXTEND")
+    player:Data():Extend({
+        Coords = { x = x, y = y, z = z }
+    })
 end)
 
 -- A debug command for banning

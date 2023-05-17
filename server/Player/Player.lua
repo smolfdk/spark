@@ -45,8 +45,13 @@ AddEventHandler('playerDropped', function(reason)
     assert(steam, "A user dropped, but no steam identifier is found. Please report this.")
 
     -- Get the user data that should be saved, to check after things
-    local data = Player:Raw(steam)
 
+    print(json.encode(Player:Raw(steam)))
+    TriggerEvent('Spark:Dropped', steam)
+
+    local data = Player:Raw(steam)
+    print(json.encode(Player:Raw(steam)))
+    
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
 
