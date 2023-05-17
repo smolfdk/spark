@@ -5,6 +5,22 @@ local Player = {
     Players = {},
 }
 
+-- Needs config thingy
+local DeathLocation = {
+    x = 1,
+    y = 1,
+    z = 1
+} -- Where you will respawn
+
+local PlayerConfig = {
+    Coords = {
+        x = 484.24,
+        y = -124.54,
+        z = 63.1
+    },
+    Cash = 50000
+}
+
 --- Get the player module
 function Spark:Player()
     return Player
@@ -59,7 +75,7 @@ AddEventHandler('playerDropped', function(reason)
 
     -- Informs us that the user is left, and is getting saved
     print("User dropped with ID "..data.id.." steam "..steam.." and reason "..reason)
-    print("The saved data is: ".."The saved data is: "..json.encode(data.data))
+    print("The saved data is: "..json.encode(data.data))
 
     Player:Dump(steam, data.data) -- This will dump their data into the database.
     Player.Players[steam] = nil -- This will remove them for the players list
@@ -79,8 +95,8 @@ function Player:Auth(steam)
         }
     end
 
-    -- If the user has no saved data, is it make it a empty table
-    data.data = data.data or {}
+    -- If the user has no saved data, it will use the default data
+    data.data = data.data or json.encode(PlayerConfig)
 
     -- Insert all data into the players table, this will make life 100x easier
     self.Players[steam] = {

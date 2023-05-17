@@ -144,6 +144,7 @@ function Player:Get(identifier, value)
         --- Get the user's source, this can only be accessed after the player has spawned for the first time.
         function module:Source() return (Player:Raw(steam) or {}).source end
 
+        --- Get the user's ped, this can only be accessed after the player has spawned for the first time.
         function module:Ped() return GetPlayerPed(self:Source() or 0) end
 
         return module
@@ -158,13 +159,98 @@ function Player:Get(identifier, value)
     function player:Position()
         local module = {}
 
+        --- Set the position of the player
         function module:Set(x, y, z)
             SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
+        --- Get the position of the player
         function module:Get()
             local pos = GetEntityCoords(player:Get():Ped())
             return pos.x, pos.y, pos.z
+        end
+
+        return module
+    end
+
+    --- Get the cash module
+    function player:Cash()
+        local module = {}
+
+        --- Set the cash for the player
+        function module:Set(amount)
+            return player:Data():Set('Cash', amount)
+        end
+
+        --- Get the cash of the player
+        function module:Get()
+            return player:Data():Get('Cash')
+        end
+
+        --- Check if the player has a amount of cash
+        function module:Has(amount)
+            return self:Get() >= amount
+        end
+
+        --- Add a amount of cash to the player
+        function module:Add(amount)
+            if amount < 0 then
+                return false, "amount_is_under_0"
+            end
+
+            return true, self:Set(self:Get() + amount)
+        end
+
+        --- Remove a amount of cash from the player
+        function module:Remove(amount)
+            if amount < 0 then
+                return false, "amount_is_under_0"
+            end
+
+            if not self:Has(amount) then
+                return false, "does_not_have_enough_cash"
+            end
+
+            return true, self:Set(self:Get() - amount)
+        end
+
+        return module
+    end
+
+    --- Get the health module
+    function player:Health()
+        local module = {}
+
+        --- Set the health of the player
+        function module:Set(health)
+            SetEntityHealth(player:Get():Ped(), health)
+        end
+
+        --- Get the health of the player
+        function module:Get()
+            return GetEntityHealth(player:Get():Ped())
+        end
+
+        --- Add a amount of health to the user
+        function module:Add(amount)
+            if amount < 0 then
+                return false, "amount_is_under_0"
+            end
+
+            return true, self:Set(self:Get() + amount)
+        end
+
+        --- Remove a amount of health from the user
+        function module:Remove(amount)
+            if amount < 0 then
+                return false, "amount_is_under_0"
+            end
+
+            if self:Get() - amount < 0 then
+                return false, "invalid_health"
+            end
+
+            return self:Set(self:Get() - amount)
         end
 
         return module
@@ -225,7 +311,6 @@ end)
 -- A debug command for banning
 RegisterCommand('ban', function(_, args)
     local player = Player:Get('id', args[1])
-    player:Ban(args[2] or 'No reason')
 end)
 
 -- Run the dropped command, this is for debugging

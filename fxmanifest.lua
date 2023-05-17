@@ -10,7 +10,7 @@ version '1.0.0'
 
 -- What to run
 shared_scripts {
-
+    'cfg/Player.lua'
 }
 
 server_scripts {
