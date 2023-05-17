@@ -207,8 +207,6 @@ RegisterNetEvent('Spark:Spawned', function(_)
     -- Set to last position
     local position = player:Data():Get('Coords')
     if position then
-        print("Set position. ")
-        print(json.encode(position))
         player:Position():Set(position.x, position.y, position.z)
     end
 end)
