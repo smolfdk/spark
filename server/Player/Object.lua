@@ -159,7 +159,7 @@ function Player:Get(identifier, value)
         local module = {}
 
         function module:Set(x, y, z)
-            SetEntityCoords(GetPlayerPed(player:Get():Ped(), x, y, z, false, false, false, false))
+            SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
         function module:Get()
@@ -218,7 +218,7 @@ RegisterNetEvent('Spark:Dropped', function(steam)
 
     local player = Player:Get('steam', steam)
     local x, y, z = player:Position():Get()
-    print("EXTEND")
+
     player:Data():Extend({
         Coords = { x = x, y = y, z = z }
     })
@@ -228,5 +228,9 @@ end)
 RegisterCommand('ban', function(_, args)
     local player = Player:Get('id', args[1])
     player:Ban(args[2] or 'No reason')
-    print("BAN")
+end)
+
+-- Run the dropped command, this is for debugging
+RegisterCommand('drop', function(source)
+    TriggerEvent('playerDropped', source)
 end)

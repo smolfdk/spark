@@ -16,8 +16,8 @@ function Source:Steam(source)
     if source == 0 then -- If the source is 0 (which means its server), it will return a default steam (for debugging)
         return self.Default
     end
-
-    for _, v in pairs(GetPlayerIdentifiers(source)) do -- Loops through all their identifiers
+    print(type(source), source)
+    for _, v in pairs(GetPlayerIdentifiers(source) or {}) do -- Loops through all their identifiers
         if string.find(v, 'steam:') then -- Checks if it contains the text 'steam:'
             return v:gsub('steam:', "") -- If it does, returns a cut version where is only the hex
         end

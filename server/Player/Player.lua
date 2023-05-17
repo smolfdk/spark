@@ -39,6 +39,10 @@ end)
 --- Register when a user left, this will save their data
 AddEventHandler('playerDropped', function(reason)
     local source = source
+    if tonumber(reason) and source == "" then -- Check if the source is "artificially" put in. 
+        source = reason
+    end
+
     local steam = Spark:Source():Steam(source)
 
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
@@ -46,11 +50,9 @@ AddEventHandler('playerDropped', function(reason)
 
     -- Get the user data that should be saved, to check after things
 
-    print(json.encode(Player:Raw(steam)))
     TriggerEvent('Spark:Dropped', steam)
 
     local data = Player:Raw(steam)
-    print(json.encode(Player:Raw(steam)))
     
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
