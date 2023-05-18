@@ -9,7 +9,7 @@ local Identifiers = {
 }
 
 function Player:Get(identifier, value)
-    assert(Identifiers[identifier], "Identifier "..value.." does not exist.")
+    assert(Identifiers[identifier], "Identifier "..value or 'none'.." does not exist.")
 
     local steam, id = value, nil
     if identifier == "id" then
@@ -179,6 +179,7 @@ function Player:Get(identifier, value)
 
         --- Set the cash for the player
         function module:Set(amount)
+            assert(type(amount) == "number", "Cash amount is not a number")
             return player:Data():Set('Cash', amount)
         end
 
@@ -229,6 +230,11 @@ function Player:Get(identifier, value)
         --- Get the health of the player
         function module:Get()
             return GetEntityHealth(player:Get():Ped())
+        end
+
+        --- Get the max health of the player
+        function module:Max()
+            return GetEntityMaxHealth(player:Get():Ped())
         end
 
         --- Add a amount of health to the user
@@ -306,11 +312,6 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     player:Data():Extend({
         Coords = { x = x, y = y, z = z }
     })
-end)
-
--- A debug command for banning
-RegisterCommand('ban', function(_, args)
-    local player = Player:Get('id', args[1])
 end)
 
 -- Run the dropped command, this is for debugging
