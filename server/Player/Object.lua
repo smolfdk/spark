@@ -9,7 +9,7 @@ local Identifiers = {
 }
 
 function Player:Get(identifier, value)
-    assert(Identifiers[identifier], "Identifier "..value or 'none'.." does not exist.")
+    assert(Identifiers[identifier], "Identifier "..value or 'Invalid'.." does not exist.")
 
     local steam, id = value, nil
     if identifier == "id" then
@@ -168,95 +168,6 @@ function Player:Get(identifier, value)
         function module:Get()
             local pos = GetEntityCoords(player:Get():Ped())
             return pos.x, pos.y, pos.z
-        end
-
-        return module
-    end
-
-    --- Get the cash module
-    function player:Cash()
-        local module = {}
-
-        --- Set the cash for the player
-        function module:Set(amount)
-            assert(type(amount) == "number", "Cash amount is not a number")
-            return player:Data():Set('Cash', amount)
-        end
-
-        --- Get the cash of the player
-        function module:Get()
-            return player:Data():Get('Cash')
-        end
-
-        --- Check if the player has a amount of cash
-        function module:Has(amount)
-            return self:Get() >= amount
-        end
-
-        --- Add a amount of cash to the player
-        function module:Add(amount)
-            if amount < 0 then
-                return false, "amount_is_under_0"
-            end
-
-            return true, self:Set(self:Get() + amount)
-        end
-
-        --- Remove a amount of cash from the player
-        function module:Remove(amount)
-            if amount < 0 then
-                return false, "amount_is_under_0"
-            end
-
-            if not self:Has(amount) then
-                return false, "does_not_have_enough_cash"
-            end
-
-            return true, self:Set(self:Get() - amount)
-        end
-
-        return module
-    end
-
-    --- Get the health module
-    function player:Health()
-        local module = {}
-
-        --- Set the health of the player
-        function module:Set(health)
-            SetEntityHealth(player:Get():Ped(), health)
-        end
-
-        --- Get the health of the player
-        function module:Get()
-            return GetEntityHealth(player:Get():Ped())
-        end
-
-        --- Get the max health of the player
-        function module:Max()
-            return GetEntityMaxHealth(player:Get():Ped())
-        end
-
-        --- Add a amount of health to the user
-        function module:Add(amount)
-            if amount < 0 then
-                return false, "amount_is_under_0"
-            end
-
-            return true, self:Set(self:Get() + amount)
-        end
-
-        --- Remove a amount of health from the user
-        function module:Remove(amount)
-            if amount < 0 then
-                return false, "amount_is_under_0"
-            end
-
-            if self:Get() - amount < 0 then
-                return false, "invalid_health"
-            end
-
-            return self:Set(self:Get() - amount)
         end
 
         return module
