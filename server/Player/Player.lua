@@ -34,7 +34,6 @@ AddEventHandler('playerConnecting', function(_, __, def)
     def.defer()
     Wait(0)
 
-    print(steam)
     -- Check if steam identifier is valid
     assert(steam, "Whoops, remember to open steam ;)")
 
@@ -69,7 +68,7 @@ AddEventHandler('playerDropped', function(reason)
     TriggerEvent('Spark:Dropped', steam)
 
     local data = Player:Raw(steam)
-    
+
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
 
@@ -121,7 +120,7 @@ function Player:Data(steam)
     if not data then
         return false
     end
-    
+
     return json.decode(data.data or {})
 end
 

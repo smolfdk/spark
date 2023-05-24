@@ -24,7 +24,7 @@ server_scripts {
     'server/Player/Source.lua',
     'server/Player/Player.lua',
 
-    'server/Player/Object.lua',
+    'server/Player/Object.lua'
 }
 
 client_scripts {
