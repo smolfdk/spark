@@ -5,13 +5,7 @@ local Player = {
     Players = {},
 }
 
--- Needs config thingy
-local DeathLocation = {
-    x = 1,
-    y = 1,
-    z = 1
-} -- Where you will respawn
-
+-- need config pls
 local PlayerConfig = {
     Coords = {
         x = 484.24,

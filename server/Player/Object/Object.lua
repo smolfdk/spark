@@ -57,12 +57,9 @@ function Player:Get(identifier, value)
         --- Set a key inside the data table, this is used for storing data easily.
         function data:Set(key, value)
             if not player:Is():Online() then -- If the user is online, we use database.
-                local user = Player:Data(steam)
-                assert(user, "User does not exist?")
-                assert(type(user) == "table", "Saved data is not a table?")
-
-                user[key] = value
-                return true, player:Dump(user)
+                self:Extend({
+                    key = value
+                })
             end
 
             (self:Raw() or {})[key] = value
@@ -205,6 +202,7 @@ RegisterNetEvent('Spark:Spawned', function(_)
     print("Player spawned, now updating source")
     Player.Players[player:Get():Steam()].source = source -- Sets the source (needs changing prob)
 
+    -- Inform all that the user is ready to be edited ;)
     TriggerEvent('Spark:Ready', player:Get():Steam())
 
     -- Set to last position
@@ -214,13 +212,14 @@ RegisterNetEvent('Spark:Spawned', function(_)
     end
 end)
 
+--- When the user drop, it will dump their "meta" data, like coords, weapons, etc.
 RegisterNetEvent('Spark:Dropped', function(steam)
     assert(source == "", "A user tried using the dropped event from the client.")
 
     local player = Player:Get('steam', steam)
-    local x, y, z = player:Position():Get()
+    local x, y, z = player:Position():Get() -- Get the coordinates
 
-    player:Data():Extend({
+    player:Data():Extend({ -- Edit the data table
         Coords = { x = x, y = y, z = z }
     })
 end)
