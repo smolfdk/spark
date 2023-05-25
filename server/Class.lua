@@ -3,6 +3,7 @@
 
 local Class = {}
 
+--- Get the class module
 function Spark:Class()
     return Class
 end

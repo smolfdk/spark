@@ -18,13 +18,16 @@ server_scripts {
     'server/HTTP.lua',
     'server/Version.lua',
 
+    'server/Socket/Socket.js',
+    'server/Socket/Socket.lua',
+
     'server/Database/Database.js',
     'server/Database/Database.lua',
 
     'server/Player/Source.lua',
     'server/Player/Player.lua',
 
-    'server/Player/Object.lua'
+    'server/Player/Object.lua',
 }
 
 client_scripts {

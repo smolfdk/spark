@@ -1,5 +1,13 @@
+-- Database controller for Spark.
+-- Made and maintained by frackz
+
 local Database = {}
 local Query, Execute, Promise = nil, nil, promise.new()
+
+--- Get the database module
+function Spark:Database()
+    return Database
+end
 
 --- Connect to the Database
 exports['Spark']:Connect({ -- insert your data here
@@ -18,11 +26,6 @@ exports['Spark']:Connect({ -- insert your data here
     Query, Execute = query, execute
     Promise:resolve() -- Resolve so all waiting queries can run
 end)
-
---- Get the database module
-function Spark:Database()
-    return Database
-end
 
 --- Execute a query, and get a response from a callback
 function Database:Query(query, cb, ...)

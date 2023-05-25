@@ -3,6 +3,7 @@
 
 local Utility = {}
 
+--- Get the Utility module
 function Spark:Utility()
     return Utility
 end

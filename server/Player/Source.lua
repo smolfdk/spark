@@ -6,7 +6,7 @@ local Source = {
     Default = 'tewstOMG' -- The default steam hex, used for debugging and whatnot
 }
 
---- Get the player module
+--- Get the source module
 function Spark:Source()
     return Source
 end
