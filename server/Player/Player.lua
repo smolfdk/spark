@@ -1,19 +1,7 @@
 -- Player controller and handler for Spark.
 -- Made and maintained by frackz
 
-local Player = {
-    Players = {},
-}
-
--- need config pls
-local PlayerConfig = {
-    Coords = {
-        x = 484.24,
-        y = -124.54,
-        z = 63.1
-    },
-    Cash = 50000
-}
+local Player = Spark:Config():Get('Player')
 
 --- Get the player module
 function Spark:Player()
@@ -33,7 +21,6 @@ AddEventHandler('playerConnecting', function(_, __, def)
 
     def.update("Checking your data...")
     local data = Player:Auth(steam) -- Authenticate the player by steam
-
 
     -- This will check if the returned data is valid
     assert(data or data.id, "Error while returning your data, please report this.")
@@ -89,7 +76,7 @@ function Player:Auth(steam)
     end
 
     -- If the user has no saved data, it will use the default data
-    data.data = data.data or json.encode(PlayerConfig)
+    data.data = data.data or json.encode(self.Default)
 
     -- Insert all data into the players table, this will make life 100x easier
     self.Players[steam] = {

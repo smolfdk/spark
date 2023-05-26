@@ -1,11 +1,16 @@
+-- Config controller for Spark.
+-- Made and maintained by frackz
+
 local Config = {
     Configs = {}
 }
 
+--- Get the Config module
 function Spark:Config()
     return Config
 end
 
+--- Get a config by path, this is just the name of the file
 function Config:Get(path)
     if self.Configs[path] then
         return self.Configs[path]

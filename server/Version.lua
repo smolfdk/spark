@@ -1,10 +1,7 @@
 -- Version controller for Spark.
 -- Made and maintained by frackz
 
-local Version = {
-    Version = 1.0,
-    Request = 'https://pastebin.com/raw/sh5zZrmy'
-}
+local Version = Spark:Config():Get('Version')
 
 --- Get the Version module
 function Spark:Version()
