@@ -130,7 +130,7 @@ function Player:Convert(id)
 end
 
 --- This will load all users again. Only use this if player table is empty
-function Player:LoadAll()
+function Player:All()
     for _, source in pairs(GetPlayers()) do -- Loop all users
         local data = Player:Auth(Spark:Source():Steam(source)) -- Authenticate them
         Wait(500)
@@ -142,7 +142,7 @@ end
 
 --- This will load all online users, when Spark gets restarted. This is more for development
 CreateThread(function()
-    Player:LoadAll()
+    Player:All()
 end)
 
 --- This is currently just for testing playerConnecting and playerDropped events.
