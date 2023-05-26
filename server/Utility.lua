@@ -23,3 +23,7 @@ function Utility:Copy(object, destination)
 
     return destination
 end
+
+function Utility:Resource()
+    return GetCurrentResourceName()
+end

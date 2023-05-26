@@ -15,6 +15,8 @@ shared_scripts {
 
 server_scripts {
     'server/Spark.lua',
+    'server/Utility.lua',
+    'server/Config.lua',
     'server/HTTP.lua',
     'server/Version.lua',
 

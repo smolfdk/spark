@@ -58,11 +58,13 @@ function Socket:Connect(url)
     end
 
     exports['Spark']:Socket(url,
-    function(...) send, close = ... module:Run('open')
-    end, function(msg) module:Run('message', msg)
-    end, function(code) module:Run('error', code)
-    end, function(reason) module:Run('close', reason)
+        function(...) send, close = ... module:Run('open')
+        end, function(msg) module:Run('message', msg)
+        end, function(code) module:Run('error', code)
+        end, function(reason) module:Run('close', reason)
     end)
 
     return module
 end
+
+local cfg = Spark:Config():Get('Player')
