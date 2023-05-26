@@ -8,7 +8,7 @@ All functions which does not require the user's ped to be used, can be triggered
 local Spark = exports["Spark"]:Spark()
 
 local User = 
-Spark:Get('id', 1) -- Get user from ID
+Spark:Get('id', 1 or '1') -- Get user from ID
 Spark:Get('steam', 'hex here')  -- Get user from Steam Hex
 Spark:Get('source', 1) -- Get user from source
 ```
