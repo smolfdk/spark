@@ -66,5 +66,3 @@ function Socket:Connect(url)
 
     return module
 end
-
-local cfg = Spark:Config():Get('Player')

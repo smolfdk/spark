@@ -30,10 +30,7 @@ end)
 --- Execute a query, and get a response from a callback
 function Database:Query(query, cb, ...)
     Citizen.Await(Promise) -- Wait for connection to establish
-
-    if not Query then
-        return false, error("Connection is invalid")
-    end
+    assert(Query, "Whoops, database not done loading! Cannot execute in the meanwhile")
 
     local Response = Query(query, ...)
     local Message = Response.sqlMessage
@@ -55,9 +52,7 @@ function Database:Await(query, ...)
     local Promise = promise.new()
 
     self:Query(query, function(result)
-        if not result then
-            return
-        end
+        assert(result, "Result is nil, prob a internal error.")
 
         Promise:resolve(result)
     end, ...)
@@ -66,11 +61,9 @@ function Database:Await(query, ...)
 end
 
 function Database:Execute(query, ...)
-    local args = ...
-    if type(...) ~= "table" then
-        args = {...}
-    end
-    
+    local args = type(...) == "table" and ... or {...}
+    assert(Execute, "Whoops, database not done loading! Cannot execute in the meanwhile")
+
     local Response = Execute(query, args)
     local Message = Response.sqlMessage
 

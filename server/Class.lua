@@ -8,6 +8,7 @@ function Spark:Class()
     return Class
 end
 
+--- Extend a class
 function Class:Extend(object)
     object = object or {}
 
@@ -23,6 +24,7 @@ function Class:Extend(object)
     return object
 end
 
+--- Initiliaze a class
 function Class:Init(...)
     local object = self:Extend()
     if object.__init then
@@ -32,6 +34,7 @@ function Class:Init(...)
     return object
 end
 
+--- Create a new class
 function Class:New(object)
     object = object or {}
     return self:Extend(object)
