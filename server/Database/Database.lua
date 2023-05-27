@@ -35,11 +35,8 @@ function Database:Query(query, cb, ...)
     local Response = Query(query, ...)
     local Message = Response.sqlMessage
 
-    if not Message then
-        return cb(Response)
-    end
-
-    return cb(false), error("Error while executing query? "..Message)
+    assert(not Message, "Error while 'quering', message: "..tostring(Message))
+    return cb(Response)
 end
 
 --- Get the first element inside the response
@@ -61,15 +58,12 @@ function Database:Await(query, ...)
 end
 
 function Database:Execute(query, ...)
+    Citizen.Await(Promise)
     local args = type(...) == "table" and ... or {...}
-    assert(Execute, "Whoops, database not done loading! Cannot execute in the meanwhile")
 
     local Response = Execute(query, args)
     local Message = Response.sqlMessage
 
-    if not Message then
-        return Response.result, Response.fields
-    end
-
-    return false, error("Error while executing? "..Message)
+    assert(not Message, "Error while executing query, message: "..tostring(Message))
+    return Response.result, Response.fields
 end
