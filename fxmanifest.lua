@@ -8,9 +8,23 @@ author 'frackz <https://github.com/frackz>'
 description 'A FiveM framework'
 version '1.0.0'
 
--- What to run
+ui_page 'gui/Index.html'
+
+files {
+    'gui/Menu/Index.css',
+    'gui/Menu/Index.js'
+}
+
 shared_scripts {
     'cfg/Player.lua'
+}
+
+client_scripts {
+    'client/Spark.lua',
+    'client/Events.lua',
+    'client/Player.lua',
+
+    'client/GUI/Menu.lua'
 }
 
 server_scripts {
@@ -30,10 +44,6 @@ server_scripts {
     'server/Player/Player.lua',
 
     'server/Player/Object.lua',
-}
-
-client_scripts {
-    'client/Events.lua'
 }
 
 lua54 'yes'

@@ -277,5 +277,4 @@ end)
 CreateThread(function()
     Wait(1000)
     local player = Player:Get('source', 0)
-    player:
 end)

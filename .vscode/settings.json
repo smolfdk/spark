@@ -1,0 +1,16 @@
+{
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "lowercase-global",
+        "undefined-field",
+        "unsupport-symbol",
+        "unknown-symbol",
+        "exp-in-action",
+        "need-check-nil",
+        "err-nonstandard-symbol",
+        "undefined-doc-name",
+        "luadoc-miss-symbol",
+        "undefined-doc-param",
+        "duplicate-set-field"
+    ]
+}

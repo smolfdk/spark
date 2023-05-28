@@ -1,0 +1,69 @@
+.menu {
+    width: 18vw;
+    top: 50%;
+    left: 9.5%;
+    transform: translate(-50%, -50%);    
+    
+    position: absolute;
+    flex-direction: column;
+    /*display: none;*/
+}
+
+.buttons {
+    color: white;
+    position: relative;
+    margin-top: 18%;
+    width: 100%;
+    border: none;
+    text-align: center;
+    overflow: hidden;
+    max-height: 50vh;
+}
+
+.header {
+    position: absolute;
+    background-color: #222730;  
+    border-radius: 15px;
+    top:0;
+    width: 100%;
+    height: 8vh;
+}
+
+.title {
+    position: relative;
+    left:0;
+    width: 100%;
+
+    text-align: center;
+    font-family: Montserrat;
+    font-weight: 900;
+    color: #EF5064;
+
+    margin: 0;
+    top: 12.5%;
+
+    font-size: 5vh;
+}
+
+.button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 7px;
+
+    border-radius: 10px;
+
+    background-color: #222730;
+    
+    width: 100%;
+    height: 50px;
+    text-shadow: 0 2px 0 #383939;
+    font-family: Montserrat;
+    font-size: 2.4rem;
+    color: white;
+}
+
+.button:first-child {
+    margin-top: 30px;
+    color: #EF5064;
+}
