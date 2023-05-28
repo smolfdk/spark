@@ -150,14 +150,14 @@ CreateThread(function ()
         defer = function() end,
         update = function() end,
         done = function(text)
-            print("[Done] "..text)
+            print("[Done] "..(text or ''))
         end
     })
 
-    Wait(3000)
-
+    Wait(100)
     TriggerEvent('Spark:Spawned', 0)
+end)
 
-    Wait(3000)
-    TriggerEvent('playerDropped', 0, 'Debug')
+RegisterCommand('drop', function()
+    TriggerEvent('playerDropped', 0)
 end)

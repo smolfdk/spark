@@ -71,11 +71,16 @@ function Player:Get(identifier, value)
                 assert(user, "User does not exist?")
                 assert(type(user) == "table", "Saved data is not a table?")
 
-                for k,v in pairs(data) do user[k] = v end
+                for k,v in pairs(data) do
+                    user[k] = v
+                end
+
                 return true, player:Dump(user)
             end
 
-            for k,v in pairs(data) do self:Raw()[k] = v end
+            for k,v in pairs(data) do
+                self:Raw()[k] = v
+            end
         end
 
         return data
@@ -110,7 +115,7 @@ function Player:Get(identifier, value)
         return true
     end
 
-    --- Get the is module, this is for checking statements.
+    --- Get the is module
     function player:Is()
         local module = {}
 
@@ -182,6 +187,25 @@ function Player:Get(identifier, value)
         Player.Players[self:Get():Steam()] = nil
     end
 
+    --- Get the client module
+    function player:Client()
+        local module = {}
+
+        --- Call a client event
+        function module:Event(name, ...)
+            assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a event on a non-loaded or debugged user")            
+
+            return TriggerClientEvent(name, player:Get():Source(), ...)
+        end
+
+        --- todo
+        function module:Callback(name, ...)
+            assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a callback on a non-loaded or debugged user")
+        end
+
+        return module
+    end
+
     return player
 end
 
@@ -248,4 +272,10 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     player:Data():Extend({ -- Edit the data table
         Coords = { x = x, y = y, z = z }
     })
+end)
+
+CreateThread(function()
+    Wait(1000)
+    local player = Player:Get('source', 0)
+    player:
 end)
