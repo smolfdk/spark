@@ -44,13 +44,13 @@ AddEventHandler('playerDropped', function(reason)
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
     assert(steam, "A user dropped, but no steam identifier is found. Please report this.")
 
-    -- Get the user data that should be saved, to check after things
-    TriggerEvent('Spark:Dropped', steam)
-
     local data = Player:Raw(steam)
 
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
+
+    -- Get the user data that should be saved, to check after things
+    TriggerEvent('Spark:Dropped', steam)
 
     -- Informs us that the user is left, and is getting saved
     print("User dropped with ID "..data.id.." steam "..steam.." and reason "..reason)
@@ -149,7 +149,9 @@ CreateThread(function ()
     TriggerEvent('playerConnecting', 0, nil, {
         defer = function() end,
         update = function() end,
-        done = function() end
+        done = function(text)
+            print("[Done] "..text)
+        end
     })
 
     Wait(3000)

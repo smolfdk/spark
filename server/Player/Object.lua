@@ -2,11 +2,11 @@
 -- Made and maintained by frackz
 
 local Player = Spark:Player()
-local Identifiers = {
+local Identifiers, Config = {
     steam = true,
     source = true,
     id = true
-}
+}, Spark:Config():Get('Server')
 
 function Player:Get(identifier, value)
     assert(Identifiers[identifier], "Identifier "..value or 'Invalid'.." does not exist.")
@@ -122,6 +122,12 @@ function Player:Get(identifier, value)
         --- Check if the user is whitelisted
         function module:Whitelisted() return player:Data():Get('Whitelisted') or false end
 
+        --- Check if the user is a debug account
+        function module:Debug() return player:Get():Source() == 0 or player:Get():Source() == "" end
+
+        --- Check if the user is currently loaded in (has a source)
+        function module:Loaded() return player:Get():Source() ~= nil end
+
         return module
     end
 
@@ -170,6 +176,11 @@ function Player:Get(identifier, value)
         return module
     end
 
+    --- Remove the user from the players list
+    function player:Exile()
+        Player.Players[self:Get():Steam()] = nil
+    end
+
     return player
 end
 
@@ -180,7 +191,11 @@ RegisterNetEvent('Spark:Connect', function(steam, def)
 
     local player = Player:Get('steam', steam)
     if player:Is():Banned() then -- Check if the user is banned
-        return def.done("You are banned for: ".. (player:Get():Ban() or 'No reason set'))
+        return def.done("You are banned for: ".. (player:Get():Ban() or 'No reason set')), player:Exile()
+    end
+
+    if Config.Whitelist and not player:Is():Whitelisted() then
+        return def.done("You are not currently whitelisted"), player:Exile()
     end
 
     def.done() -- And after all th(ose/e) checks, we can finally move on.
@@ -190,6 +205,9 @@ end)
 RegisterNetEvent('Spark:Spawned', function(_)
     local source = (type(_) == "number" and source == "") and _ or source
     local player = Player:Get('source', source)
+
+    -- Check if the player is unreachable
+    assert(player, "The user that spawned is currently unreachable")
 
     -- Makes sure that the user is online, and does not alread have a source. (needs changing)
     assert(player:Is():Online(), "Player what spawned is not online?")
@@ -202,7 +220,7 @@ RegisterNetEvent('Spark:Spawned', function(_)
     TriggerEvent('Spark:Ready', player:Get():Steam())
 
     -- Check if it is a debug account, and therefor has no ped to update.
-    if source == 0 then
+    if player:Is():Debug() then
         return print("Debug account spawned")
     end
 
@@ -220,8 +238,8 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     local player = Player:Get('steam', steam)
 
     -- Check if it is a debug account, and therefor has no ped data to extract.
-    if player:Get():Source() == 0 then
-        return print("Source is zero. Debugging account")
+    if player:Is():Debug() or not player:Is():Loaded() then
+        return print("Dropped player is a debugging account - or is not loaded.")
     end
 
     local x, y, z = player:Position():Get() -- Get the coordinates
