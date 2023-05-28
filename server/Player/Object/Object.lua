@@ -188,11 +188,7 @@ end)
 
 --- When the player has spawned, this is important for getting their source.
 RegisterNetEvent('Spark:Spawned', function(_)
-    local source = source
-    if _ and source == "" then -- Check if the source is "artificially" put in. 
-        source = _
-    end
-
+    local source = (type(_) == "number" and source == "") and _ or source
     local player = Player:Get('source', source)
 
     -- Makes sure that the user is online, and does not alread have a source. (needs changing)
@@ -204,6 +200,11 @@ RegisterNetEvent('Spark:Spawned', function(_)
 
     -- Inform all that the user is ready to be edited ;)
     TriggerEvent('Spark:Ready', player:Get():Steam())
+
+    -- Check if it is a debug account, and therefor has no ped to update.
+    if source == 0 then
+        return print("Debug account spawned")
+    end
 
     -- Set to last position
     local position = player:Data():Get('Coords')
@@ -217,14 +218,15 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     assert(source == "", "A user tried using the dropped event from the client.")
 
     local player = Player:Get('steam', steam)
+
+    -- Check if it is a debug account, and therefor has no ped data to extract.
+    if player:Get():Source() == 0 then
+        return print("Source is zero. Debugging account")
+    end
+
     local x, y, z = player:Position():Get() -- Get the coordinates
 
     player:Data():Extend({ -- Edit the data table
         Coords = { x = x, y = y, z = z }
     })
-end)
-
--- Run the dropped command, this is for debugging
-RegisterCommand('drop', function(source)
-    TriggerEvent('playerDropped', source)
 end)

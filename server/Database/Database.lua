@@ -10,19 +10,11 @@ function Spark:Database()
 end
 
 --- Connect to the Database
-exports['Spark']:Connect({ -- insert your data here
-    host = "localhost",
-    user = "root",
-    password = "",
-    database = "spark",
-    port = 3306, -- dont touch if you dont know what you're doing
-    connectionLimit = 10, -- ^^
-    dateStrings = true -- ^^
-}, function(query, execute)
+exports['Spark']:Connect(Spark:Config():Get('Database'), function(query, execute)
     if type(query) == "string" or type(execute) == "string" then
         return error("Error when tried to connect to database! "..query)
     end
-    
+
     Query, Execute = query, execute
     Promise:resolve() -- Resolve so all waiting queries can run
 end)

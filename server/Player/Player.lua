@@ -10,20 +10,24 @@ end
 
 --- Register the user when they are joining
 AddEventHandler('playerConnecting', function(_, __, def)
-    local source = source
+    local source = (type(_) == "number" and source == "") and _ or source
     local steam = Spark:Source():Steam(source)
 
     def.defer()
     Wait(0)
 
     -- Check if steam identifier is valid
-    assert(steam, "Whoops, remember to open steam ;)")
+    if not steam then
+        return def.done('Whoops, remember to open steam ;)')
+    end
 
     def.update("Checking your data...")
     local data = Player:Auth(steam) -- Authenticate the player by steam
 
     -- This will check if the returned data is valid
-    assert(data or data.id, "Error while returning your data, please report this.")
+    if not (data or {}).id then
+        return def.done("Error while returning your data, please report this."), error("Error while authenticating user")
+    end
 
     Wait(0)
     def.update("You are now logged in as ID: "..data.id) -- Report to the user that they are now logged in
@@ -34,18 +38,13 @@ end)
 
 --- Register when a user left, this will save their data
 AddEventHandler('playerDropped', function(reason)
-    local source = source
-    if tonumber(reason) and source == "" then -- Check if the source is "artificially" put in. 
-        source = reason
-    end
-
+    local source = (type(reason) == "number" and source == "") and reason or source
     local steam = Spark:Source():Steam(source)
 
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
     assert(steam, "A user dropped, but no steam identifier is found. Please report this.")
 
     -- Get the user data that should be saved, to check after things
-
     TriggerEvent('Spark:Dropped', steam)
 
     local data = Player:Raw(steam)
@@ -146,20 +145,17 @@ CreateThread(function()
 end)
 
 --- This is currently just for testing playerConnecting and playerDropped events.
---[[CreateThread(function ()
+CreateThread(function ()
     TriggerEvent('playerConnecting', 0, nil, {
-        defer = function()
-            print("Defered")
-        end,
-        update = function(text)
-            print("Update - "..text)
-        end,
-        done = function(text)
-            print("Done - "..text)
-        end
+        defer = function() end,
+        update = function() end,
+        done = function() end
     })
-    Wait(100)
+
+    Wait(3000)
 
     TriggerEvent('Spark:Spawned', 0)
-    --TriggerEvent('playerDropped', 0, 'Debug')
-end)--]]
+
+    Wait(3000)
+    TriggerEvent('playerDropped', 0, 'Debug')
+end)
