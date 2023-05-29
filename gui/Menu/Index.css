@@ -6,7 +6,7 @@
     
     position: absolute;
     flex-direction: column;
-    /*display: none;*/
+    display: none;
 }
 
 .buttons {

@@ -45,7 +45,7 @@ server_scripts {
     'server/Player/Player.lua',
 
     'server/Player/Object.lua',
-    
+
     'server/Event.lua'
 }
 

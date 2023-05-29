@@ -16,11 +16,12 @@ end
 
 function Event:Handle(name, callback)
     AddEventHandler(name, function(...)
+        local source = source
         local player
         if source ~= "" then
             player = Spark:Player():Get('source', source)
         end
 
-        callback(player, ...)
-    end)    
+        pcall(callback(player, ...))
+    end)
 end

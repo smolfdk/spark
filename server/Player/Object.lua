@@ -93,7 +93,7 @@ function Player:Get(identifier, value)
         -- Checks if the user is online, and the source has been set, and if the account is a debug
         assert(player:Is():Online(), "Trying to kick offline user!")
         assert(player:Get():Source(), "Source is not set, and therefor cannot kick player")
-        assert(player:Is():Debug(), "Cannot kick a debug account")
+        assert(not player:Is():Debug(), "Cannot kick a debug account")
 
         DropPlayer(player:Get():Source(), reason)
     end
