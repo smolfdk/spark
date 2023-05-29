@@ -51,6 +51,7 @@ function Menu:Open()
     return Open
 end
 
+--- Check for key presses (like close, enter, down, up)
 CreateThread(function()
     while true do
         if Open then
@@ -82,13 +83,4 @@ CreateThread(function()
 
         Wait(1)
     end
-end)
-
-RegisterCommand('menu', function()
-    NetworkOverrideClockTime(6, 30, 00)
-    Menu:Show('Hello', {
-        "Hello",
-        "Ok",
-        "123"
-    }, '#EF5064')
 end)
