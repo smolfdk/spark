@@ -1,5 +1,3 @@
-console.log("LOAD JS")
-
 window.addEventListener('message', event => {
     event = event.data
     if(!event.index) return
@@ -12,16 +10,12 @@ window.addEventListener('message', event => {
         color: event.color
     })
 
-    console.log("SCROLL")
     document.getElementById((event.index).toString()).scrollIntoView()
-
 
     let next = $('.menu .buttons #'+(event.index-1).toString())
     let down = $('.menu .buttons #'+(event.index+1).toString())
     let teleport = $('.menu .buttons #'+(event.oldIndex-1).toString())
     
-    console.log("BUTTONS")
-
     let data = {color: '#ffffff'}
     
     if (event.method == 'up') next.css(data)
@@ -30,10 +24,8 @@ window.addEventListener('message', event => {
 })
 
 window.addEventListener('message', event => {
-    console.log("HEJ")
     event = event.data
     if(event.type != "menu") return console.log("NO MENU")
-    console.log("CLOSE "+event.show)
     if(event.show == false) return $('.menu').css({
         display: 'none'
     })

@@ -3,16 +3,18 @@ local Open, Index, Data, Color = false, 1, {}, '#EF5064'
 
 local Menu = {}
 
+--- Get the menu module
 function Spark:Menu()
     return Menu
 end
 
-function Menu:Show(text, data, color)
+--- Open the menu with title, buttons, and color
+function Menu:Show(title, data, color)
     Player:NUI():Send({
         show = true,
-        text = text,
+        text = title,
         list = data,
-        color = color,
+        color = color or Color,
         
         type = 'menu'
     })
@@ -20,17 +22,19 @@ function Menu:Show(text, data, color)
     Index, Data, Open, Color = #data, data, true, color
 end
 
+--- Close the currently shown menu.
 function Menu:Close()
     Player:NUI():Send({
         show = false,
         text = text,
-        
+
         type = 'menu'
     })
 
     Open, Data = false, {}
 end
 
+--- Move the currently selected button (for development mainly)
 function Menu:Move(method, old)
     Player:NUI():Send({
         oldIndex = old,
@@ -42,11 +46,15 @@ function Menu:Move(method, old)
     })
 end
 
+--- Check if the menu is open
+function Menu:Open()
+    return Open
+end
+
 CreateThread(function()
     while true do
         if Open then
             if Player:Keys():Pressed('BACKSPACE') then
-                print("CLOSE")
                 Menu:Close()
             elseif Player:Keys():Pressed('ARROWDOWN') then
                 local index = Index
@@ -58,7 +66,6 @@ CreateThread(function()
                     Menu:Move('teleport', index)
                 end
             elseif Player:Keys():Pressed('ARROWUP') then
-                print("UP")
                 local index = Index
                 if Index ~= #Data then
                     Index = Index + 1
@@ -73,11 +80,12 @@ CreateThread(function()
             end
         end
 
-        Wait(0)
+        Wait(1)
     end
 end)
 
 RegisterCommand('menu', function()
+    NetworkOverrideClockTime(6, 30, 00)
     Menu:Show('Hello', {
         "Hello",
         "Ok",
