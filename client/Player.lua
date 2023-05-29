@@ -83,26 +83,31 @@ function Player:Position()
     return module
 end
 
+--- Get the NUI module
 function Player:NUI()
     local module = {}
 
     --- Send a NUI Message
     function module:Send(data)
-        return SendNuiMessage(data)
+        print("Send")
+        return SendNUIMessage(data)
     end
 
     return module
 end
 
+--- Get the key module
 function Player:Keys()
     local module = {}
 
+    --- Check if a key is pressed
     function module:Pressed(key)
-        assert(self:Get(key), "Key does not exist.")
+        assert(self:Get(key), "Key "..tostring(key).." does not exist.") -- Check if the key exists.
         
         return IsControlJustPressed(1, self:Get(key))
     end
 
+    --- Get the key's "id"
     function module:Get(key)
         return Keys[key]
     end

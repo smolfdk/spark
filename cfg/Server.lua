@@ -1,3 +1,3 @@
 return {
-    Whitelist = true
+    Whitelist = false
 }

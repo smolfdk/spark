@@ -1,3 +1,5 @@
+console.log("LOAD JS")
+
 window.addEventListener('message', event => {
     event = event.data
     if(!event.index) return
@@ -24,8 +26,9 @@ window.addEventListener('message', event => {
 })
 
 window.addEventListener('message', event => {
+    console.log("HEJ")
     event = event.data
-    if(event.type != "menu") return
+    if(event.type != "menu") return console.log("NO MENU")
     if(!event.show) return $('.menu').css({
         display: 'none'
     })

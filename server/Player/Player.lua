@@ -10,7 +10,7 @@ end
 
 --- Register the user when they are joining
 AddEventHandler('playerConnecting', function(_, __, def)
-    local source = (type(_) == "number" and source == "") and _ or source
+    local source = (source == "") and _ or source
     local steam = Spark:Source():Steam(source)
 
     def.defer()
@@ -38,7 +38,7 @@ end)
 
 --- Register when a user left, this will save their data
 AddEventHandler('playerDropped', function(reason)
-    local source = (type(reason) == "number" and source == "") and reason or source
+    local source = (source == "") and reason or source
     local steam = Spark:Source():Steam(source)
 
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
@@ -145,7 +145,7 @@ CreateThread(function()
 end)
 
 --- This is currently just for testing playerConnecting and playerDropped events.
-CreateThread(function ()
+--[[CreateThread(function ()
     TriggerEvent('playerConnecting', 0, nil, {
         defer = function() end,
         update = function() end,
@@ -154,9 +154,9 @@ CreateThread(function ()
         end
     })
 
-    Wait(100)
+    Wait(500)
     TriggerEvent('Spark:Spawned', 0)
-end)
+end)--]]
 
 RegisterCommand('drop', function()
     TriggerEvent('playerDropped', 0)

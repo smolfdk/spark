@@ -228,7 +228,7 @@ end)
 
 --- When the player has spawned, this is important for getting their source.
 RegisterNetEvent('Spark:Spawned', function(_)
-    local source = (type(_) == "number" and source == "") and _ or source
+    local source = (source == "") and _ or source
     local player = Player:Get('source', source)
 
     -- Check if the player is unreachable

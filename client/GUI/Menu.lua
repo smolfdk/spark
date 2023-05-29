@@ -47,14 +47,14 @@ CreateThread(function()
         if Open then
             if Player:Keys():Pressed('BACKSPACE') then
                 Menu:Close()
-            elseif Player:Keys():Pressed('DOWN') then
+            elseif Player:Keys():Pressed('PAGEDOWN') then
                 if Index ~= 1 then
                     Index = Index - 1
                     Menu:Move('down', 0)
                 else
                     Menu:Move('teleport', Index)
                 end
-            elseif Player:Keys():Pressed('UP') then
+            elseif Player:Keys():Pressed('PAGEUP') then
                 local index = Index
                 if Index ~= #Data then
                     Index = Index + 1
@@ -73,5 +73,9 @@ CreateThread(function()
 end)
 
 RegisterCommand('menu', function()
-    
+    Menu:Show('Hello', {
+        "Hello",
+        "Ok",
+        "123"
+    }, '#EF5064')
 end)
