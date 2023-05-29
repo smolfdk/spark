@@ -46,15 +46,19 @@ CreateThread(function()
     while true do
         if Open then
             if Player:Keys():Pressed('BACKSPACE') then
+                print("CLOSE")
                 Menu:Close()
-            elseif Player:Keys():Pressed('PAGEDOWN') then
+            elseif Player:Keys():Pressed('ARROWDOWN') then
+                local index = Index
                 if Index ~= 1 then
                     Index = Index - 1
                     Menu:Move('down', 0)
                 else
-                    Menu:Move('teleport', Index)
+                    Index = #Data
+                    Menu:Move('teleport', index)
                 end
-            elseif Player:Keys():Pressed('PAGEUP') then
+            elseif Player:Keys():Pressed('ARROWUP') then
+                print("UP")
                 local index = Index
                 if Index ~= #Data then
                     Index = Index + 1
@@ -64,7 +68,8 @@ CreateThread(function()
                     Menu:Move('teleport', index)
                 end
             elseif Player:Keys():Pressed('ENTER') then
-                print("PRESS")
+                local button = Data[#Data-Index+1]
+                print(button)
             end
         end
 

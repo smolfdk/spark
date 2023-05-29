@@ -11,6 +11,7 @@ version '1.0.0'
 ui_page 'gui/Index.html'
 
 files {
+    'gui/Index.html',
     'gui/Menu/Index.css',
     'gui/Menu/Index.js'
 }
