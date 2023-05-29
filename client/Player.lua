@@ -109,6 +109,10 @@ function Player:NUI()
         return SendNUIMessage(data)
     end
 
+    function module:Register(name, callback)
+        return RegisterNUICallback(name, callback)
+    end
+
     return module
 end
 

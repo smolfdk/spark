@@ -1,5 +1,6 @@
 window.addEventListener('message', event => {
     event = event.data
+    if(event.type != "menu") return
     if(!event.index) return
 
     $('.menu').show()
@@ -25,7 +26,7 @@ window.addEventListener('message', event => {
 
 window.addEventListener('message', event => {
     event = event.data
-    if(event.type != "menu") return console.log("NO MENU")
+    if(event.type != "menu") return
     if(event.show == false) return $('.menu').css({
         display: 'none'
     })

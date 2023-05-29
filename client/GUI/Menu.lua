@@ -1,3 +1,6 @@
+-- Menu controller for Spark.
+-- Made and maintained by frackz
+
 local Player = Spark:Player()
 local Open, Index, Data, Color = false, 1, {}, '#EF5064'
 

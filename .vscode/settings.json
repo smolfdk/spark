@@ -11,6 +11,7 @@
         "undefined-doc-name",
         "luadoc-miss-symbol",
         "undefined-doc-param",
-        "duplicate-set-field"
+        "duplicate-set-field",
+        "redundant-parameter"
     ]
 }

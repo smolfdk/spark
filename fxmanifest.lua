@@ -12,8 +12,16 @@ ui_page 'gui/Index.html'
 
 files {
     'gui/Index.html',
+    'gui/Index.js',
+
     'gui/Menu/Index.css',
-    'gui/Menu/Index.js'
+    'gui/Menu/Index.js',
+
+    'gui/Prompt/Index.css',
+    'gui/Prompt/Index.js',
+
+    'gui/Notify/Index.css',
+    'gui/Notify/Index.js'
 }
 
 shared_scripts {
@@ -25,7 +33,9 @@ client_scripts {
     'client/Events.lua',
     'client/Player.lua',
 
-    'client/GUI/Menu.lua'
+    'client/GUI/Menu.lua',
+    'client/GUI/Notify.lua',
+    'client/GUI/Prompt.lua'
 }
 
 server_scripts {

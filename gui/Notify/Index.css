@@ -1,0 +1,28 @@
+.notify {
+    position: absolute;
+    bottom: 10px;
+    right: 3%
+}
+
+.notify .notification {
+    margin-bottom: 10px;
+    background-color: rgb(30, 33, 32);
+    border-radius: 15px;
+
+    border:10px solid #1c87c9;
+
+    width: 30vh;
+    height: 10vh;
+
+    display: flex;
+    overflow: hidden;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.notify .text {
+    color:white;
+    font-family: Montserrat;
+    font-size: 30px;
+}
