@@ -11,6 +11,8 @@ function Spark:Config()
 end
 
 --- Get a config by path, this is just the name of the file
+--- @param path string
+--- @return table
 function Config:Get(path)
     if self.Configs[path] then
         return self.Configs[path]

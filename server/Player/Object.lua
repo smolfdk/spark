@@ -8,6 +8,9 @@ local Identifiers, Config = {
     id = true
 }, Spark:Config():Get('Server')
 
+--- Get a player by source, id or steam
+--- @param identifier string
+--- @param value number | string
 function Player:Get(identifier, value)
     assert(Identifiers[identifier], "Identifier "..value or 'Invalid'.." does not exist.")
 
@@ -43,6 +46,7 @@ function Player:Get(identifier, value)
         end
 
         --- Get a key from the data table
+        --- @param key string
         function data:Get(key)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
@@ -55,6 +59,8 @@ function Player:Get(identifier, value)
         end
 
         --- Set a key inside the data table, this is used for storing data easily.
+        --- @param key string
+        --- @param value any
         function data:Set(key, value)
             if not player:Is():Online() then -- If the user is online, we use database.
                 self:Extend({
@@ -65,6 +71,8 @@ function Player:Get(identifier, value)
             (self:Raw() or {})[key] = value
         end
 
+        --- Extend the data set
+        --- @param data table
         function data:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
@@ -87,6 +95,7 @@ function Player:Get(identifier, value)
     end
 
     --- Kick the player from the server
+    --- @param reason string
     function player:Kick(reason)
         reason = reason or 'No reason set.'
 
@@ -99,6 +108,7 @@ function Player:Get(identifier, value)
     end
 
     --- Ban the user from the server
+    --- @param reason string
     function player:Ban(reason)
         reason = reason or 'No reason set.' -- If no reason is it set, use default one.
 
@@ -120,18 +130,23 @@ function Player:Get(identifier, value)
         local module = {}
 
         --- Check if the user is online
+        --- @return boolean
         function module:Online() return player:Data():Raw() ~= nil end
 
         --- Check if the user is banned
+        --- @return boolean
         function module:Banned() return player:Data():Get('Banned') ~= nil end
 
         --- Check if the user is whitelisted
+        --- @return boolean
         function module:Whitelisted() return player:Data():Get('Whitelisted') or false end
 
         --- Check if the user is a debug account
+        --- @return boolean
         function module:Debug() return player:Get():Source() == 0 or player:Get():Source() == "" end
 
         --- Check if the user is currently loaded in (has a source)
+        --- @return boolean
         function module:Loaded() return player:Get():Source() ~= nil end
 
         return module
@@ -142,6 +157,7 @@ function Player:Get(identifier, value)
         local module = {}
 
         --- Get the user's ban reason, will return false if not banned.
+        --- @return string | boolean
         function module:Ban() return player:Data():Get('Banned') or false end
 
         --- Get the user's id, this can be accessed immediately
@@ -151,17 +167,20 @@ function Player:Get(identifier, value)
         function module:Steam() return steam end
 
         --- Get the user's source, this can only be accessed after the player has spawned for the first time.
+        --- @return number
         function module:Source() return (Player:Raw(steam) or {}).source end
 
         --- Get the user's ped, this can only be accessed after the player has spawned for the first time.
+        --- @return number
         function module:Ped() return GetPlayerPed(self:Source() or 0) end
 
         return module
     end
 
     --- This will dump user data to the database, only do this if you need to.
+    --- @param data table
     function player:Dump(data)
-        return Player:Dump(steam, self:Data():Raw() or data)
+        return Player:Dump(steam, data or self:Data():Raw())
     end
 
     --- Get the position module
@@ -169,11 +188,15 @@ function Player:Get(identifier, value)
         local module = {}
 
         --- Set the position of the player
+        --- @param x number
+        --- @param y number
+        --- @param z number
         function module:Set(x, y, z)
-            SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
+           SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
         --- Get the position of the player
+        --- @return number, number, number
         function module:Get()
             local pos = GetEntityCoords(player:Get():Ped())
             return pos.x, pos.y, pos.z
@@ -192,6 +215,8 @@ function Player:Get(identifier, value)
         local module = {}
 
         --- Call a client event
+        --- @param name string
+        --- @param ... table
         function module:Event(name, ...)
             assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a event on a non-loaded or debugged user")            
 
@@ -272,9 +297,4 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     player:Data():Extend({ -- Edit the data table
         Coords = { x = x, y = y, z = z }
     })
-end)
-
-CreateThread(function()
-    Wait(1000)
-    local player = Player:Get('source', 0)
 end)

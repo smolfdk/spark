@@ -9,6 +9,8 @@ function Spark:Utility()
 end
 
 --- Copy a table, make a replica without refrences.
+--- @param object table | nil
+--- @param destination table | nil
 function Utility:Copy(object, destination)
     object, destination = object or {}, destination or {}
 
@@ -26,6 +28,7 @@ function Utility:Copy(object, destination)
 end
 
 --- Get the resource name
+--- @return string
 function Utility:Resource()
     return GetCurrentResourceName()
 end

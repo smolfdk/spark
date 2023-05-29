@@ -8,6 +8,8 @@ function Spark:Socket()
     return Socket
 end
 
+--- Connect to a socket by url
+--- @param url string
 function Socket:Connect(url)
     local module, events, send, close = {}, {
         open = {},
@@ -36,10 +38,11 @@ function Socket:Connect(url)
     end
 
     --- Send a message to the socket
+    --- @param message string
     function module:Message(message)
         assert(send or close, "Cannot send message if the socket is not open.")
 
-        send(message) -- This will send a message to the JS script telling it to send the message
+        return send(message) -- This will send a message to the JS script telling it to send the message
     end
 
     --- Close the socket, the socket will be useless after this.
@@ -51,6 +54,8 @@ function Socket:Connect(url)
     end
 
     --- Run a event, this is usally only used for development
+    --- @param event string
+    --- @param ... table
     function module:Run(event, ...)
         for _, v in pairs(events[event] or {}) do
             v(...)

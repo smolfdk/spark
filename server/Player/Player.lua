@@ -61,6 +61,8 @@ AddEventHandler('playerDropped', function(reason)
 end)
 
 --- Authenticate a user by steam
+--- @param steam string
+--- @return table
 function Player:Auth(steam)
     local data = self:Pull('steam', steam)
 
@@ -87,6 +89,8 @@ function Player:Auth(steam)
 end
 
 --- Dump user data into the database, and will remove them from the saved players table.
+--- @param steam string
+--- @param data table
 function Player:Dump(steam, data)
     assert(data, "User is nil while trying to dump it? Please report this.")
 
@@ -95,6 +99,7 @@ function Player:Dump(steam, data)
 end
 
 --- Get user data by steam
+--- @param steam string
 function Player:Data(steam)
     local data = self:Pull('steam', steam)
     if not data then
@@ -105,27 +110,35 @@ function Player:Data(steam)
 end
 
 --- Get player data from database.
+--- @param qoute string
+--- @param steam string
 function Player:Pull(qoute, steam)
     return Spark:Database():First('SELECT * FROM users WHERE '..qoute..' = ?', steam)
 end
 
 --- Check if a user is registered
+--- @param steam string
 function Player:Exist(steam)
     return self:Pull('steam', steam) ~= nil
 end
 
 --- Get the raw data of a user, this will contain the player table
+--- @param steam string
 function Player:Raw(steam)
     return self.Players[steam]
 end
 
 --- Convert ID to steam
+--- @param id number | string
+--- @return number | string
 function Player:Convert(id)
     for k,v in pairs(self.Players) do
         if v.id == id or tonumber(v.id) == id then
             return k
         end
     end
+
+    return 0
 end
 
 --- This will load all users again. Only use this if player table is empty

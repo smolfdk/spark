@@ -12,7 +12,6 @@ $(document).ready(() => {
     $(document).keyup(e => {
         let type = "cancel", data = {}
         if (e.key != "Enter" && e.key != "Escape") return
-
         if (e.key == "Enter") {
             type = "submit", data = {
                 text: $('.prompt .input').val()

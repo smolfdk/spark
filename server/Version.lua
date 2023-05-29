@@ -9,11 +9,13 @@ function Spark:Version()
 end
 
 --- Get the current version
+--- @return number
 function Version:Get()
    return self.Version
 end
 
 --- Get the newest version
+--- @return number?
 function Version:Newest()
     local success, request = Spark:HTTP():Perform(self.Request, 'GET')
 

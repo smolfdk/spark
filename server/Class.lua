@@ -8,7 +8,8 @@ function Spark:Class()
     return Class
 end
 
---- Extend a class
+--- Extend a class by object
+--- @param object table | nil
 function Class:Extend(object)
     object = object or {}
 
