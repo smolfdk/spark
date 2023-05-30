@@ -55,7 +55,6 @@ function Socket:Connect(url)
 
     --- Run a event, this is usally only used for development
     --- @param event string
-    --- @param ... table
     function module:Run(event, ...)
         for _, v in pairs(events[event] or {}) do
             v(...)

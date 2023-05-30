@@ -1,5 +1,5 @@
 let Menu = false
-let Data = ["abc", "123", "asd", "Bob", "Lets go"]
+let Data = ["0", "1", "2", "3", "4"]
 let Index = 0
 let Color = '#EF5064'
 let Last
@@ -27,6 +27,7 @@ let Update = () => {
 
 $(document).ready(() => {
     $(document).keyup(e => {
+        console.log(e.key)
         if (e.key == "ArrowUp") {
             if (Index == 0) {
                 Index = Data.length-1
@@ -41,36 +42,17 @@ $(document).ready(() => {
                 Index += 1
             }
             Update()
+        } else if (e.key == "Backspace") {
+            console.log("CLOSE")
+        } else if (e.key == "Enter") {
+            //Send('click', {
+            //    button: Data[index]
+            //})
+            console.log("CLICK ON BUTTON "+Data[Index])
         }
     })
 })
 
-window.addEventListener('message', event => {
-    event = event.data
-    if(event.type != "menu") return
-    if(!event.index) return
-
-    Menu = true
-    $('.menu').show()
-    event.index -= 1
-
-    let button = $('.menu .buttons #'+(event.index).toString())
-    button.css({
-        color: event.color
-    })
-
-    document.getElementById((event.index).toString()).scrollIntoView()
-
-    let next = $('.menu .buttons #'+(event.index-1).toString())
-    let down = $('.menu .buttons #'+(event.index+1).toString())
-    let teleport = $('.menu .buttons #'+(event.oldIndex-1).toString())
-    
-    let data = {color: '#ffffff'}
-    
-    if (event.method == 'up') next.css(data)
-    else if (event.method == 'down') down.css(data)
-    else if (event.method == 'teleport') teleport.css(data)
-})
 
 window.addEventListener('message', event => {
     event = event.data
