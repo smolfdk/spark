@@ -1,20 +1,46 @@
 let Menu = false
+let Data = ["abc", "123", "asd", "Bob", "Lets go"]
+let Index = 0
+let Color = '#EF5064'
+let Last
+
+let Update = () => {
+    let string = Index.toString()
+    document.getElementById(string).scrollIntoView()
+    let button = $('.menu .buttons #'+string)
+    button.css({
+        color: Color
+    })
+
+    if (Last) {
+        Last.css({
+            color: '#ffffff'
+        })
+    } else {
+        $('.menu .button:first-child').css({
+            color: '#ffffff'
+        })
+    }
+
+    Last = button
+}
+
 $(document).ready(() => {
     $(document).keyup(e => {
-        //if(!Menu) return
-        switch (e.key) {
-            case "ArrowUp":
-                console.log("Up")
-                break
-            case "ArrowDown":
-                console.log("Down")
-                break
-            case "Enter":
-                console.log("Click")
-                break
-            case "Backspace":
-                console.log("Close")
-                break
+        if (e.key == "ArrowUp") {
+            if (Index == 0) {
+                Index = Data.length-1
+            } else {
+                Index -= 1
+            }
+            Update()
+        } else if (e.key == "ArrowDown") {
+            if (Index == Data.length-1) {
+                Index = 0
+            } else {
+                Index += 1
+            }
+            Update()
         }
     })
 })
@@ -68,6 +94,7 @@ window.addEventListener('message', event => {
     $('.buttons').empty()
     
     let index = event.list.length
+    Data = event.list
     event.list.forEach(element => {
         index -= 1
         $('<div id="'+index.toString()+'" class="button">'+element+'</div>').appendTo('.buttons')

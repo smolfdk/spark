@@ -62,7 +62,7 @@ CreateThread(function()
                 Menu:Close()
             elseif Player:Keys():Pressed('ARROWDOWN') then
                 local index = Index
-                if Index ~= 1 then
+                if Index ~= 0 then
                     Index = Index - 1
                     Menu:Move('down', 0)
                 else
