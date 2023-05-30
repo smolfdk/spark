@@ -1,8 +1,30 @@
+let Menu = false
+$(document).ready(() => {
+    $(document).keyup(e => {
+        //if(!Menu) return
+        switch (e.key) {
+            case "ArrowUp":
+                console.log("Up")
+                break
+            case "ArrowDown":
+                console.log("Down")
+                break
+            case "Enter":
+                console.log("Click")
+                break
+            case "Backspace":
+                console.log("Close")
+                break
+        }
+    })
+})
+
 window.addEventListener('message', event => {
     event = event.data
     if(event.type != "menu") return
     if(!event.index) return
 
+    Menu = true
     $('.menu').show()
     event.index -= 1
 
@@ -27,9 +49,12 @@ window.addEventListener('message', event => {
 window.addEventListener('message', event => {
     event = event.data
     if(event.type != "menu") return
-    if(event.show == false) return $('.menu').css({
-        display: 'none'
-    })
+    if(event.show == false) {
+        Menu = false
+        return $('.menu').css({
+            display: 'none'
+        })
+    }
 
     $('.menu').css({
         display: 'flex'

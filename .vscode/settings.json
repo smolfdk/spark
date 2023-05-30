@@ -14,5 +14,11 @@
         "duplicate-set-field",
         "redundant-parameter",
         "param-type-mismatch"
+    ],
+    "robloxLsp.diagnostics.globals": [
+        "GetPedArmour"
+    ],
+    "robloxLsp.diagnostics.disable": [
+        "undefined-global"
     ]
 }

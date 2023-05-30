@@ -8,7 +8,7 @@
     transform: translate(-50%, -50%);   
 
     height: 30vh;
-    display: none;
+    /*display: none;*/
 }
 
 .prompt .header {
@@ -30,7 +30,7 @@
     font-weight: bold;
     color: #EF5064;
     top: -15px;
-    font-size: 2.4rem;
+    font-size: 2.3vw;
 }
 
 .prompt .input {
@@ -64,7 +64,7 @@
     text-shadow: 0 2px 0 #234449;
     font-family: Montserrat;
     font-weight: bold;
-    font-size: 2.4rem;
+    font-size: 2.4vw;
     color: white;
 }
 
@@ -80,4 +80,12 @@
 .prompt .submit {
     background-color: #28A745;
     right: 20px;
+}
+
+.prompt .cancel:hover {
+    background-color: rgb(240, 30, 54);
+}
+
+.prompt .submit:hover {
+    background-color: #2d7d40;
 }

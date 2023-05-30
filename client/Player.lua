@@ -34,7 +34,7 @@ function Player:Get()
 
     --- Get the players's armor
     function module:Armor()
-        return GetPedArmour(self:Ped())        
+        return GetPedArmour(self:Ped())  
     end
 
     --- Get the player's health
