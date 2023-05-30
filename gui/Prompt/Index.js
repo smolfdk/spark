@@ -40,5 +40,4 @@ window.addEventListener('message', event => {
     $('.prompt .input').css({
         "font-size": event.size
     }).focus()
-    console.log("Init prompt")
 })
