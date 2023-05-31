@@ -5,7 +5,7 @@ local Player = Spark:Player()
 
 --- Send a notification
 function Spark:Notify(text, color)
-    return Player:NUI():Send({
+    return NUI:Send({
         brow = text,
         colors = color,
 

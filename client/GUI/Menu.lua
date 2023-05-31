@@ -1,7 +1,7 @@
 -- Menu controller for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Player()
+local NUI = Spark:NUI()
 local Open, Index, Data, Color = false, 1, {}, '#EF5064'
 
 local Menu = {}
@@ -13,7 +13,7 @@ end
 
 --- Open the menu with title, buttons, and color
 function Menu:Show(title, data, color)
-    Player:NUI():Send({
+    NUI:Send({
         show = true,
         text = title,
         list = data,
@@ -27,7 +27,7 @@ end
 
 --- Close the currently shown menu.
 function Menu:Close()
-    Player:NUI():Send({
+    NUI:Send({
         show = false,
         text = text,
 
@@ -39,7 +39,7 @@ end
 
 --- Move the currently selected button (for development mainly)
 function Menu:Move(method, old)
-    Player:NUI():Send({
+    NUI:Send({
         oldIndex = old,
         index = Index,
         method = method,
@@ -55,7 +55,7 @@ function Menu:Open()
 end
 
 --- Check for key presses (like close, enter, down, up)
-CreateThread(function()
+--[[CreateThread(function()
     while true do
         if Open then
             if Player:Keys():Pressed('BACKSPACE') then
@@ -86,4 +86,4 @@ CreateThread(function()
 
         Wait(1)
     end
-end)
+end)--]]

@@ -14,7 +14,7 @@ end
 --- Show the prompt
 function Prompt:Show(text, size)
     assert(not Status, "Prompt is already open")
-    return SetNuiFocus(true, true), Player:NUI():Send({
+    return SetNuiFocus(true, true), NUI:Send({
         show = true,
         text = text,
         size = size,
@@ -24,13 +24,13 @@ function Prompt:Show(text, size)
 end
 
 --- When the key / button cancel has been pressed
-Player:NUI():Register('Prompt:Cancel', function(data, cb)
+NUI:Register('Prompt:Cancel', function(data, cb)
     SetNuiFocus(false, false)
     print("cancel", cb(true))
 end)
 
 --- When the key / button submit has been pressed
-Player:NUI():Register('Prompt:Submit', function(data, cb)
+NUI:Register('Prompt:Submit', function(data, cb)
     SetNuiFocus(false, false)
     print(data.text, cb(true))
 end)
