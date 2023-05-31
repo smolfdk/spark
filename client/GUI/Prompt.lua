@@ -24,13 +24,17 @@ function Prompt:Show(text, size)
 end
 
 --- When the key / button cancel has been pressed
-Player:NUI():Register('cancel', function(data, cb)
+Player:NUI():Register('Prompt:Cancel', function(data, cb)
     SetNuiFocus(false, false)
-    print("cancel", cb())
+    print("cancel", cb(true))
 end)
 
 --- When the key / button submit has been pressed
-Player:NUI():Register('submit', function(data, cb)
+Player:NUI():Register('Prompt:Submit', function(data, cb)
     SetNuiFocus(false, false)
-    print(data.text, cb())
+    print(data.text, cb(true))
+end)
+
+RegisterCommand('Hello', function()
+    Prompt:Show('test', 14)
 end)

@@ -5,17 +5,17 @@ let Prompt = (type, data) => Send(type, data).then(() => {
 })
 
 $(document).ready(() => {
-    $('.cancel').click(() => Prompt('cancel', {}))
-    $('.submit').click(() => Prompt('submit', {
+    $('.cancel').click(() => Prompt('Prompt:Cancel', {}))
+    $('.submit').click(() => Prompt('Prompt:Submit', {
         text: $('.prompt .input').val()
     }))
 
     $(document).keyup(e => {
         if(!Open) return
-        let type = "cancel", data = {}
+        let type = "Prompt:Cancel", data = {}
         if (e.key != "Enter" && e.key != "Escape") return
         if (e.key == "Enter") {
-            type = "submit", data = {
+            type = "Prompt:Submit", data = {
                 text: $('.prompt .input').val()
             }
         } 
