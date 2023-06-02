@@ -33,6 +33,9 @@ client_scripts {
     'client/Events.lua',
     'client/Player.lua',
 
+    'client/NUI.lua',
+    'client/Keys.lua',
+
     'client/GUI/Menu.lua',
     'client/GUI/Notify.lua',
     'client/GUI/Prompt.lua'

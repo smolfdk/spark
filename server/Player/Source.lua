@@ -12,6 +12,7 @@ function Spark:Source()
 end
 
 --- Get the steam identifier from source
+--- @param source number
 function Source:Steam(source)
     if source == 0 then -- If the source is 0 (which means its server), it will return a default steam (for debugging)
         return self.Default

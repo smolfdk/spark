@@ -6,10 +6,14 @@ function Spark:NUI()
 end
 
 --- Send a NUI message
-function NUI:Send(...)
-    return SendNUIMessage(...)
+--- @param data table
+function NUI:Send(data)
+    return SendNUIMessage(data)
 end
 
-function NUI:Register(...)
-   return RegisterNUICallback(...)
+--- Register a NUI callback
+--- @param name string
+--- @param cb function
+function NUI:Register(name, cb)
+   return RegisterNUICallback(name, cb)
 end

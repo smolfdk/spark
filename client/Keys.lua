@@ -17,13 +17,16 @@ function Spark:Keys()
 end
 
 --- Check if the key is pressed
+--- @param key string
+--- @return boolean
 function Keys:Pressed(key)
     assert(self:Get(key), "Key "..tostring(key).." does not exist.") -- Check if the key exists.
-    
     return IsControlJustPressed(1, self:Get(key))
 end
 
---- Get the key's "id"
+--- Get the key's control id
+--- @param key string
+--- @return number | nil
 function Keys:Get(key)
     return self.Keys[key]
 end

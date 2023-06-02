@@ -41,6 +41,7 @@ function Player:Get(identifier, value)
         local data = {}
 
         --- Get the whole data table
+        --- @return table | nil
         function data:Raw()
             return (Player:Raw(steam) or {})['data']
         end
@@ -107,22 +108,41 @@ function Player:Get(identifier, value)
         DropPlayer(player:Get():Source(), reason)
     end
 
-    --- Ban the user from the server
-    --- @param reason string
-    function player:Ban(reason)
-        reason = reason or 'No reason set.' -- If no reason is it set, use default one.
+    --- Get the set module
+    function player:Set()
+        local module = {}
 
-        if self:Is():Banned() then -- If user is already banned, unban them (this will be changed)
-            return false, self:Data():Set('Banned', nil)
+        --- Set the position of the player
+        --- @param x number
+        --- @param y number
+        --- @param z number
+        function module:Position(x, y, z)
+            return SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
-        self:Data():Set('Banned', reason) -- Set the banned key to the reason
-        
-        if self:Is():Online() then -- If they are online, kick them.
-            self:Kick('[Banned] '..reason)
+        --- Set if the user is banned
+        --- @param value boolean
+        --- @param reason string
+        function module:Banned(value, reason)
+            if not value then
+                return false, player:Data():Set('Banned', nil)
+            end
+
+            player:Data():Set('Banned', reason)
+            if player:Is():Online() then
+                player:Kick('[Banned] '..reason)
+            end
+
+            return true
         end
 
-        return true
+        --- Set if the user is whitelisted
+        --- @param value boolean
+        function module:Whitelisted(value)
+            return player:Data():Set('Whitelisted', value)
+        end
+
+        return module
     end
 
     --- Get the is module
@@ -174,6 +194,13 @@ function Player:Get(identifier, value)
         --- @return number
         function module:Ped() return GetPlayerPed(self:Source() or 0) end
 
+        --- Get the position of the player - only after ped is set
+        --- @return number, number, number
+        function module:Position()
+            local pos = GetEntityCoords(player:Get():Ped())
+            return pos.x, pos.y, pos.z
+        end
+
         return module
     end
 
@@ -181,28 +208,6 @@ function Player:Get(identifier, value)
     --- @param data table
     function player:Dump(data)
         return Player:Dump(steam, data or self:Data():Raw())
-    end
-
-    --- Get the position module
-    function player:Position()
-        local module = {}
-
-        --- Set the position of the player
-        --- @param x number
-        --- @param y number
-        --- @param z number
-        function module:Set(x, y, z)
-           SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
-        end
-
-        --- Get the position of the player
-        --- @return number, number, number
-        function module:Get()
-            local pos = GetEntityCoords(player:Get():Ped())
-            return pos.x, pos.y, pos.z
-        end
-
-        return module
     end
 
     --- Remove the user from the players list
@@ -216,14 +221,14 @@ function Player:Get(identifier, value)
 
         --- Call a client event
         --- @param name string
-        --- @param ... table
         function module:Event(name, ...)
             assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a event on a non-loaded or debugged user")            
 
             return TriggerClientEvent(name, player:Get():Source(), ...)
         end
 
-        --- todo
+        --- Call a callback, and hopefully get a response...
+        --- @param name string
         function module:Callback(name, ...)
             assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a callback on a non-loaded or debugged user")
         end
@@ -235,7 +240,6 @@ function Player:Get(identifier, value)
 end
 
 --- Connect event, this is after the user has been authenticated, so checks needs to be done
---- TODO (Make so if you are rejected you will be removed from lists, etc)
 RegisterNetEvent('Spark:Connect', function(steam, def)
     assert(source == "", "A user tried using the connect event from the client.")
 
@@ -277,7 +281,7 @@ RegisterNetEvent('Spark:Spawned', function(_)
     -- Set to last position
     local position = player:Data():Get('Coords')
     if position then
-        player:Position():Set(position.x, position.y, position.z)
+        player:Set():Position(position.x, position.y, position.z)
     end
 end)
 

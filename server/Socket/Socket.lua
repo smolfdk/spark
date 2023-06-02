@@ -23,15 +23,19 @@ function Socket:Connect(url)
         local module = {}
 
         --- The open event is triggered after the socket is ready and opened
+        --- @param def function
         function module:Open(def) table.insert(events.open, def) end
 
         --- The message event is triggered whenever a message is recieved
+        --- @param def function
         function module:Message(def) table.insert(events.message, def) end
 
         --- The error event is triggered whenever a error occurs
+        --- @param def function
         function module:Error(def) table.insert(events.error, def) end
 
         --- The close event is triggered if the socket closes.
+        --- @param def function
         function module:Close(def) table.insert(events.close, def) end
 
         return module

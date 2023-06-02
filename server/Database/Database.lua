@@ -20,6 +20,8 @@ exports['Spark']:Connect(Spark:Config():Get('Database'), function(query, execute
 end)
 
 --- Execute a query, and get a response from a callback
+--- @param query string
+--- @param cb function
 function Database:Query(query, cb, ...)
     Citizen.Await(Promise) -- Wait for connection to establish
     assert(Query, "Whoops, database not done loading! Cannot execute in the meanwhile")
@@ -32,11 +34,13 @@ function Database:Query(query, cb, ...)
 end
 
 --- Get the first element inside the response
+--- @param query string
 function Database:First(query, ...)
     return (self:Await(query, ...) or {{}})[1]
 end
 
 --- Await for a query to execute, this will return all findings
+--- @param query string
 function Database:Await(query, ...)
     local Promise = promise.new()
 
@@ -49,6 +53,8 @@ function Database:Await(query, ...)
     return Citizen.Await(Promise)
 end
 
+--- Execute a query directly
+--- @param query string
 function Database:Execute(query, ...)
     Citizen.Await(Promise)
     local args = type(...) == "table" and ... or {...}

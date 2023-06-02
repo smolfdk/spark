@@ -1,10 +1,7 @@
 -- Prompt controller for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Player()
-local Status = false
-
-local Prompt = {}
+local Status, Prompt = false, {}
 
 --- Get the prompt module
 function Spark:Prompt()
@@ -12,6 +9,8 @@ function Spark:Prompt()
 end
 
 --- Show the prompt
+--- @param text string
+--- @param size number
 function Prompt:Show(text, size)
     assert(not Status, "Prompt is already open")
     return SetNuiFocus(true, true), NUI:Send({
@@ -33,8 +32,4 @@ end)
 NUI:Register('Prompt:Submit', function(data, cb)
     SetNuiFocus(false, false)
     print(data.text, cb(true))
-end)
-
-RegisterCommand('Hello', function()
-    Prompt:Show('test', 14)
 end)
