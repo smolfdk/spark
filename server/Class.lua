@@ -36,6 +36,7 @@ function Class:Init(...)
 end
 
 --- Create a new class
+--- @param object table | nil
 function Class:New(object)
     object = object or {}
     return self:Extend(object)

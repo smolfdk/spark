@@ -1,3 +1,4 @@
+// Send a callback request back to Lua
 async function Send(url, data) {
     return (
         await fetch(`https://${GetParentResourceName()}/${url}`, {
@@ -5,7 +6,7 @@ async function Send(url, data) {
             headers: {
                 "Content-Type": 'application/json; charset=UTF-8'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data) // Encode the data body into JSON
         })
-    ).json()
+    ).json() // Return the response in JSON format.
 }

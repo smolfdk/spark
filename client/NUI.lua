@@ -8,6 +8,10 @@ end
 --- Send a NUI message
 --- @param data table
 function NUI:Send(data)
+    assert(data or type(data) == "table",
+        "Cannot send NUI message with invalid data :/"
+    )
+
     return SendNUIMessage(data)
 end
 
@@ -15,5 +19,9 @@ end
 --- @param name string
 --- @param cb function
 function NUI:Register(name, cb)
-   return RegisterNUICallback(name, cb)
+    assert(name or cb,
+        "Cannot register a NUI callback with invalid a invalid name or callback"
+    )
+
+    return RegisterNUICallback(name, cb)
 end

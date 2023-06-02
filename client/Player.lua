@@ -39,7 +39,7 @@ function Player:Get()
     --- Get the player's position
     --- @return number, number, number
     function module:Position()
-        local pos = GetEntityCoords(Player:Get():Ped())
+        local pos = GetEntityCoords(Player:Get():Ped()) or {}
         return pos.x, pos.y, pos.z
     end
 
@@ -59,12 +59,14 @@ function Player:Set()
     --- Set the player's armor
     --- @param amount number
     function module:Armor(amount)
+        amount = amount or 0
         return SetPedArmour(Player:Get():Ped(), amount)
     end
 
     --- Set the player's health
     --- @param amount number
     function module:Health(amount)
+        amount = amount or 0
         return SetEntityHealth(Player:Get():Ped(), amount)
     end
 
@@ -73,12 +75,17 @@ function Player:Set()
     --- @param y number
     --- @param z number
     function module:Position(x, y, z)
+        assert(x or y or z,
+            "Cannot edit position of player with invalid coordinates."
+        )
+
         return SetEntityCoords(Player:Get():Ped(), x, y, z, false, false, false, false)
     end
 
     --- Get the player's heading
     --- @param heading number
     function module:Heading(heading)
+        heading = heading or 0
         return SetEntityHeading(Player:Get():Ped(), heading)
     end
 
@@ -92,12 +99,14 @@ function Player:Server()
     --- Trigger a server event
     --- @param name string
     function module:Event(name, ...)
+        assert(name, "Cannot call a event with no name :/")
         return TriggerServerEvent(name, ...)
     end
 
     --- Trigger a server callback, and hopefully get a response.
+    --- @param name string
     function module:Callback(name, ...)
-        
+        assert(name, "Cannot call a callback with no name :/")
     end
     
     return module

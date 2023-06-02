@@ -20,7 +20,7 @@ end
 --- @param key string
 --- @return boolean
 function Keys:Pressed(key)
-    assert(self:Get(key), "Key "..tostring(key).." does not exist.") -- Check if the key exists.
+    assert(self:Get(key), "Key "..tostring(key).." does not exist.")
     return IsControlJustPressed(1, self:Get(key))
 end
 
