@@ -38,17 +38,17 @@ function Player:Get(identifier, value)
 
     --- Get the player data module.
     function player:Data()
-        local data = {}
+        local module = {}
 
         --- Get the whole data table
         --- @return table | nil
-        function data:Raw()
+        function module:Raw()
             return (Player:Raw(steam) or {})['data']
         end
 
         --- Get a key from the data table
         --- @param key string
-        function data:Get(key)
+        function module:Get(key)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
                 assert(user, "User does not exist?")
@@ -62,7 +62,7 @@ function Player:Get(identifier, value)
         --- Set a key inside the data table, this is used for storing data easily.
         --- @param key string
         --- @param value any
-        function data:Set(key, value)
+        function module:Set(key, value)
             if value == nil then
                 value = player:Null()
             end
@@ -74,7 +74,7 @@ function Player:Get(identifier, value)
 
         --- Extend the data set
         --- @param data table
-        function data:Extend(data)
+        function module:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
                 assert(user, "User does not exist?")
@@ -94,7 +94,7 @@ function Player:Get(identifier, value)
             end
         end
 
-        return data
+        return module
     end
 
     --- Kick the player from the server

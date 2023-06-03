@@ -1,6 +1,8 @@
 -- Notification controller for Spark.
 -- Made and maintained by frackz
 
+local NUI = Spark:NUI()
+
 --- Send a notification
 --- @param text string
 --- @param color string

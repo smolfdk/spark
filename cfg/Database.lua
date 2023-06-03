@@ -1,4 +1,4 @@
-return { -- insert your data here
+return {
     host = "localhost",
     user = "root",
     password = "",

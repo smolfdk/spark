@@ -27,3 +27,14 @@ function NUI:Register(name, cb)
         return callback(cb(data))
     end)
 end
+
+--- Set NUI focus
+--- @param focus boolean
+--- @param cursor boolean
+function NUI:Focus(focus, cursor)
+    assert(focus or cursor,
+        "Cannot change NUI focus, with invalid arguments"
+    )
+
+    return SetNuiFocus(focus, cursor)
+end
