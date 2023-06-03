@@ -27,8 +27,9 @@ function Config:Get(path)
     assert(f, "Error while parsing config "..path.." error "..tostring(err))
 
     local response = table.pack(xpcall(f, debug.traceback))
-    assert(response[1], "Error loading config "..path)
+    local config, content = response[1], response[2]
+    assert(config, "Error loading config "..path)
 
-    self.Configs[path] = response[2]
-    return response[2]
+    self.Configs[path] = content
+    return content
 end

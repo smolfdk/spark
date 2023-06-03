@@ -3,7 +3,7 @@
 -- Made and maintained by frackz
 
 local Source = {
-    Default = 'tewstOMG' -- The default steam hex, used for debugging and whatnot
+    Dummy = 'tewstOMG' -- The default steam hex, used for debugging and whatnot
 }
 
 --- Get the source module
@@ -14,8 +14,8 @@ end
 --- Get the steam identifier from source
 --- @param source number
 function Source:Steam(source)
-    if source == 0 then -- If the source is 0 (which means its server), it will return a default steam (for debugging)
-        return self.Default
+    if not source or source == 0 then -- Check if its a debugging account
+        return self.Dummy
     end
 
     for _, v in pairs(GetPlayerIdentifiers(source) or {}) do -- Loops through all their identifiers
