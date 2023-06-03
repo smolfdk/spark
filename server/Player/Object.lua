@@ -32,7 +32,9 @@ function Player:Get(identifier, value)
         id, steam = data.id, data.steam -- Update the id and steam to the database information.
     end
 
-    local player = {}
+    local player = {
+        Nil = {}
+    }
 
     --- Get the player data module.
     function player:Data()
@@ -62,7 +64,7 @@ function Player:Get(identifier, value)
         --- @param value any
         function data:Set(key, value)
             if value == nil then
-                return self:Extend(key)
+                value = player:Null()
             end
 
             return self:Extend({
@@ -71,30 +73,24 @@ function Player:Get(identifier, value)
         end
 
         --- Extend the data set
-        --- @param data table | string
+        --- @param data table
         function data:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
                 assert(user, "User does not exist?")
                 assert(type(user) == "table", "Saved data is not a table?")
 
-                if type(data) == "string" then
-                    user[data] = nil
-                else
-                    for k,v in pairs(data) do
-                        user[k] = v
-                    end
+                for k,v in pairs(data) do
+                    v = (v ~= player:Null()) and v or nil
+                    user[k] = v
                 end
 
                 return true, player:Dump(user)
             end
 
-            if type(data) == "string" then
-                self:Raw()[data] = nil
-            else
-                for k,v in pairs(data) do
-                    self:Raw()[k] = v
-                end
+            for k,v in pairs(data) do
+                v = (v ~= player:Null()) and v or nil
+                self:Raw()[k] = v
             end
         end
 
@@ -232,6 +228,12 @@ function Player:Get(identifier, value)
         Player.Players[self:Get():Steam()] = nil
     end
 
+    --- Use this instead of "nil" in your tables, if you use :Data():Extend()
+    --- @return table
+    function player:Null()
+        return self.Nil
+    end
+
     --- Get the client module
     function player:Client()
         local module = {}
@@ -320,8 +322,8 @@ RegisterNetEvent('Spark:Dropped', function(steam)
     local x, y, z = player:Get():Position() -- Get the coordinates
 
     player:Data():Extend({ -- Edit the data table
-        Coords = { x = x, y = y, z = z },
-        Health = player:Get():Health()
+        Coords = { x = x, y = y, z = z } or player:Null(),
+        Health = player:Get():Health() or player:Null()
     })
 end)
 
