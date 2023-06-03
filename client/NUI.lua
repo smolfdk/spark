@@ -23,5 +23,7 @@ function NUI:Register(name, cb)
         "Cannot register a NUI callback with invalid a invalid name or callback"
     )
 
-    return RegisterNUICallback(name, cb)
+    return RegisterNUICallback(name, function(data, callback)
+        return callback(cb(data))
+    end)
 end

@@ -88,7 +88,7 @@ function Player:Auth(steam)
     return data
 end
 
---- Dump user data into the database, and will remove them from the saved players table.
+--- Dump user data into the database
 --- @param steam string
 --- @param data table
 function Player:Dump(steam, data)
@@ -98,8 +98,9 @@ function Player:Dump(steam, data)
     Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data), steam)
 end
 
---- Get user data by steam
+--- Get user data by steam from the database
 --- @param steam string
+--- @return table | boolean
 function Player:Data(steam)
     local data = self:Pull('steam', steam)
     if not data then
@@ -112,18 +113,21 @@ end
 --- Get player data from database.
 --- @param qoute string
 --- @param steam string
+--- @return table
 function Player:Pull(qoute, steam)
     return Spark:Database():First('SELECT * FROM users WHERE '..qoute..' = ?', steam)
 end
 
 --- Check if a user is registered
 --- @param steam string
+--- @return boolean
 function Player:Exist(steam)
     return self:Pull('steam', steam) ~= nil
 end
 
 --- Get the raw data of a user, this will contain the player table
 --- @param steam string
+--- @return table
 function Player:Raw(steam)
     return self.Players[steam]
 end

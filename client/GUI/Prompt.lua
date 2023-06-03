@@ -23,13 +23,15 @@ function Prompt:Show(text, size)
 end
 
 --- When the key / button cancel has been pressed
-NUI:Register('Prompt:Cancel', function(_, cb)
+NUI:Register('Prompt:Cancel', function()
     SetNuiFocus(false, false)
-    print("cancel", cb())
+
+    return true
 end)
 
 --- When the key / button submit has been pressed
-NUI:Register('Prompt:Submit', function(data, cb)
+NUI:Register('Prompt:Submit', function(data)
     SetNuiFocus(false, false)
-    print(data.text, cb())
+    print(data.text)
+    return true
 end)

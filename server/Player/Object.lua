@@ -9,10 +9,8 @@ local Identifiers, Config = {
 }, Spark:Config():Get('Server')
 
 --- Get a player by source, id or steam
---- @param identifier string
---- @param value number | string
 function Player:Get(identifier, value)
-    assert(Identifiers[identifier], "Identifier "..value or 'Invalid'.." does not exist.")
+    assert(Identifiers[identifier], "Identifier "..(value or 'Invalid').." does not exist.")
 
     local steam, id = value, nil
     if identifier == "id" then
@@ -63,28 +61,37 @@ function Player:Get(identifier, value)
         --- @param key string
         --- @param value any
         function data:Set(key, value)
-            if not player:Is():Online() then -- If the user is online, we use database.
-                self:Extend({
-                    key = value
-                })
+            if value == nil then
+                return self:Extend(key)
             end
 
-            (self:Raw() or {})[key] = value
+            return self:Extend({
+                [key] = value
+            })
         end
 
         --- Extend the data set
-        --- @param data table
+        --- @param data table | string
         function data:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
                 local user = Player:Data(steam)
                 assert(user, "User does not exist?")
                 assert(type(user) == "table", "Saved data is not a table?")
 
-                for k,v in pairs(data) do
-                    user[k] = v
+                if type(data) == "string" then
+                    user[data] = nil
+                else
+                    for k,v in pairs(data) do
+                        user[k] = v
+                    end
                 end
 
                 return true, player:Dump(user)
+            end
+
+            if type(data) == "string" then
+                self:Raw()[data] = nil
+                return
             end
 
             for k,v in pairs(data) do
@@ -120,9 +127,16 @@ function Player:Get(identifier, value)
             return SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
+        --- Set the health of the player
+        --- @param amount number
+        function module:Health(amount)
+            amount = amount or 0
+            return SetEntityHealth(player:Get():Ped(), amount)
+        end
+
         --- Set if the user is banned
         --- @param value boolean
-        --- @param reason string
+        --- @param reason string | nil
         function module:Banned(value, reason)
             if not value then
                 return false, player:Data():Set('Banned', nil)
@@ -186,13 +200,17 @@ function Player:Get(identifier, value)
         --- Get the user's steam, this can be accessed immediately
         function module:Steam() return steam end
 
-        --- Get the user's source, this can only be accessed after the player has spawned for the first time.
+        --- Get the user's source, this can only be accessed after the player has spawned
         --- @return number
         function module:Source() return (Player:Raw(steam) or {}).source end
 
-        --- Get the user's ped, this can only be accessed after the player has spawned for the first time.
+        --- Get the user's ped, this can only be accessed after the player has spawned
         --- @return number
         function module:Ped() return GetPlayerPed(self:Source() or 0) end
+
+        --- Get the user's health, this can only be accessed after the player has spawned
+        --- @return number
+        function module:Health() return GetEntityHealth(self:Ped()) end
 
         --- Get the position of the player - only after ped is set
         --- @return number, number, number
@@ -223,7 +241,6 @@ function Player:Get(identifier, value)
         --- @param name string
         function module:Event(name, ...)
             assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a event on a non-loaded or debugged user")            
-
             return TriggerClientEvent(name, player:Get():Source(), ...)
         end
 
@@ -278,10 +295,15 @@ RegisterNetEvent('Spark:Spawned', function(_)
         return print("Debug account spawned")
     end
 
-    -- Set to last position
+    -- Update player information / like position, and health.
     local position = player:Data():Get('Coords')
+    local health = player:Data():Get('Health')
     if position then
         player:Set():Position(position.x, position.y, position.z)
+    end
+
+    if health then
+        player:Set():Health(health)
     end
 end)
 
@@ -296,9 +318,15 @@ RegisterNetEvent('Spark:Dropped', function(steam)
         return print("Dropped player is a debugging account - or is not loaded.")
     end
 
-    local x, y, z = player:Position():Get() -- Get the coordinates
+    local x, y, z = player:Get():Position() -- Get the coordinates
 
     player:Data():Extend({ -- Edit the data table
-        Coords = { x = x, y = y, z = z }
+        Coords = { x = x, y = y, z = z },
+        Health = player:Get():Health()
     })
+end)
+
+RegisterCommand('ban', function(_, args)
+    local player = Player:Get('steam', args[1])
+    player:Set():Banned(false)
 end)
