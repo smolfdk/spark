@@ -91,11 +91,10 @@ function Player:Get(identifier, value)
 
             if type(data) == "string" then
                 self:Raw()[data] = nil
-                return
-            end
-
-            for k,v in pairs(data) do
-                self:Raw()[k] = v
+            else
+                for k,v in pairs(data) do
+                    self:Raw()[k] = v
+                end
             end
         end
 
