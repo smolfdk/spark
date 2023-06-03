@@ -54,6 +54,8 @@ server_scripts {
     'server/Database/Database.js',
     'server/Database/Database.lua',
 
+    'server/Callback.lua',
+
     'server/Player/Source.lua',
     'server/Player/Player.lua',
 

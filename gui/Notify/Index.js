@@ -7,8 +7,7 @@ window.addEventListener('message', event => {
         </div>
     `).appendTo('.notify')
 
-    element.hide().fadeIn('slow')
-    element.css({
+    element.hide().fadeIn('slow').css({
         border: '3px solid ' + event.color
     })
 

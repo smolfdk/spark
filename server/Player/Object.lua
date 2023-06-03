@@ -247,8 +247,13 @@ function Player:Get(identifier, value)
 
         --- Call a callback, and hopefully get a response...
         --- @param name string
-        function module:Callback(name, ...)
+        function module:Callback(name, cb, ...)
             assert(player:Is():Loaded() or player:Is():Debug(), "Cannot call a callback on a non-loaded or debugged user")
+            local callback = Spark:Callback()
+            local id = callback:Id()
+
+            callback.Ongoing[id] = cb
+            player:Client():Event('Spark:Callback:Client:Run', name, id, ...)
         end
 
         return module
