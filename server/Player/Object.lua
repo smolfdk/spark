@@ -76,7 +76,7 @@ function Player:Get(identifier, value)
         --- @param data table
         function module:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
-                local user = Player:Data(steam)
+                local user = Player:Data(steam) -- Pull data from database
                 assert(user, "User does not exist?")
                 assert(type(user) == "table", "Saved data is not a table?")
 
@@ -85,7 +85,7 @@ function Player:Get(identifier, value)
                     user[k] = v
                 end
 
-                return true, player:Dump(user)
+                return true, player:Dump(user) -- Dump data to database
             end
 
             for k,v in pairs(data) do
