@@ -1,6 +1,7 @@
-local Player = Spark:Player()
+-- Callback controller for Spark.
+-- Made and maintained by frackz
 
-local Callback = {
+local Callback, Player = Spark:Player(), {
     Callbacks = {},
     Ongoing = {},
     CurrentId = 0

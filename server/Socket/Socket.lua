@@ -45,7 +45,6 @@ function Socket:Connect(url)
     --- @param message string
     function module:Message(message)
         assert(send or close, "Cannot send message if the socket is not open.")
-
         return send(message) -- This will send a message to the JS script telling it to send the message
     end
 

@@ -1,3 +1,6 @@
+-- NUI controller for Spark.
+-- Made and maintained by frackz
+
 local NUI = {}
 
 --- Get the NUI module

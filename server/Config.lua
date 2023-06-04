@@ -14,6 +14,7 @@ end
 --- @param path string
 --- @return table
 function Config:Get(path)
+    assert(path, "Cannot access config-file is path is nil")
     if self.Configs[path] then
         return self.Configs[path]
     end

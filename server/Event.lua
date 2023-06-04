@@ -20,6 +20,8 @@ end
 --- @param name string
 --- @param callback function
 function Event:Handle(name, callback)
+    assert(name, "Event name is invalid")
+    assert(type(callback) == "function", "Event "..name.." callback is not a function")
     AddEventHandler(name, function(...)
         local player, source = nil, source
         if source ~= "" then

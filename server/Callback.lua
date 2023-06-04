@@ -56,7 +56,7 @@ function Callback:Id()
 end
 
 Spark:Event():Register('Spark:Callback:Server:Run', function(player, name, id, ...)
-    if not Callback:Exist(name) then
+    if (not Callback:Exist(name)) or not id then
         return
     end
 
@@ -73,5 +73,5 @@ Spark:Event():Register('Spark:Callback:Server:Return', function(player, id, ...)
         return
     end
 
-    callback(...)
+    return callback(...)
 end)
