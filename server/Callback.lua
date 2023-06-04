@@ -50,6 +50,7 @@ function Callback:Get(name)
 end
 
 --- Add 1 to the current id, and get returned the new.
+--- @return number
 function Callback:Id()
     self.CurrentId = self.CurrentId + 1
     return self.CurrentId
