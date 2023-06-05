@@ -208,11 +208,17 @@ function Player:Get(identifier, value)
         function module:Health() return GetEntityHealth(self:Ped()) end
 
         --- Get the position of the player - only after ped is set
-        --- @return number, number, number
-        function module:Position()
-            local pos = GetEntityCoords(player:Get():Ped())
-            return pos.x, pos.y, pos.z
-        end
+        --- @return vector3
+        function module:Position() return GetEntityCoords(self:Ped()) end
+
+        --- Get the distance between the player and a set of coords
+        --- @param coords vector3
+        --- @return number
+        function module:Distance(coords) return #(self:Position() - coords) end
+
+        --- Get the player's heading
+        --- @return number
+        function module:Heading() return GetEntityHeading(self:Ped()) end
 
         return module
     end
@@ -324,10 +330,8 @@ RegisterNetEvent('Spark:Dropped', function(steam)
         return print("Dropped player is a debugging account - or is not loaded.")
     end
 
-    local x, y, z = player:Get():Position() -- Get the coordinates
-
     player:Data():Extend({ -- Edit the data table
-        Coords = { x = x, y = y, z = z } or player:Null(),
+        Coords = player:Get():Position() or player:Null(),
         Health = player:Get():Health() or player:Null()
     })
 end)

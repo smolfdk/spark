@@ -38,16 +38,16 @@ function Player:Get()
 
     --- Get the player's position
     --- @return number, number, number
-    function module:Position()
-        local pos = GetEntityCoords(Player:Get():Ped()) or {}
-        return pos.x, pos.y, pos.z
-    end
+    function module:Position() return GetEntityCoords(self:Ped()) end
+
+    --- Get the distance between the player and a set of coords
+    --- @param coords vector3
+    --- @return number
+    function module:Distance(coords) return #(self:Position() - coords) end
 
     --- Get the player's heading
     --- @return number
-    function module:Heading()
-        return GetEntityHeading(self:Ped())
-    end
+    function module:Heading() return GetEntityHeading(self:Ped()) end
 
     return module
 end
