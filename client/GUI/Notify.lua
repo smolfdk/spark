@@ -8,9 +8,11 @@ local NUI = Spark:NUI()
 --- @param color string
 function Spark:Notify(text, color)
     return NUI:Send({
-        brow = text,
-        colors = color,
-
-        type = "notify"
+        type = "notify",
+        action = "new",
+        data = {
+            text = text,
+            color = color
+        }
     })
 end

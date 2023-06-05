@@ -13,15 +13,16 @@ end
 --- @param size number
 function Prompt:Show(text, size, callback)
     assert(not Status, "Prompt is already open")
-    assert(type(Callback) == "function", "Callback is not a function")
+    assert(type(callback) == "function", "Callback is not a function")
 
     Callback, Status = callback, true
     return NUI:Focus(true, true), NUI:Send({
-        show = true,
-        text = text,
-        size = size,
-
-        type = "prompt"
+        type = "prompt",
+        action = "show",
+        data = {
+            text = text,
+            size = size
+        }
     })
 end
 

@@ -35,7 +35,7 @@ end
 --- @param focus boolean
 --- @param cursor boolean
 function NUI:Focus(focus, cursor)
-    assert(focus or cursor,
+    assert(focus ~= nil or cursor ~= nil,
         "Cannot change NUI focus, with invalid arguments"
     )
 

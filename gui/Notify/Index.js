@@ -1,16 +1,17 @@
 window.addEventListener('message', event => {
-    event = event.data
-    if (event.type != "notify") return
+    let item = event.data
+    let data = item.data
+    if(item.type != "notify" || item.action != "new") return
+
     let element = $(`
         <div class="notification">
-            <p class="text">${event.brow}</p>
+            <p class="text">${data.text}</p>
         </div>
     `).appendTo('.notify')
 
     element.hide().fadeIn('slow').css({
-        border: '3px solid ' + event.color
+        border: '3px solid ' + data.color
     })
 
-    console.log("New notifiaction")
     setTimeout(() => element.fadeOut('slow', () => element.remove()), 3000)
 })

@@ -21,7 +21,10 @@ files {
     'gui/Prompt/Index.js',
 
     'gui/Notify/Index.css',
-    'gui/Notify/Index.js'
+    'gui/Notify/Index.js',
+
+    -- Client config files
+    'cfg/Keys.lua'
 }
 
 shared_scripts {
@@ -31,10 +34,10 @@ shared_scripts {
 client_scripts {
     'client/Spark.lua',
     'client/Events.lua',
-    'client/Player.lua',
-
-    'client/NUI.lua',
-    'client/Keys.lua',
+    
+    'client/Player/Player.lua',
+    'client/Player/NUI.lua',
+    'client/Player/Keys.lua',
 
     'client/GUI/Menu.lua',
     'client/GUI/Notify.lua',
@@ -54,14 +57,13 @@ server_scripts {
     'server/Database/Database.js',
     'server/Database/Database.lua',
 
+    'server/Event.lua',
     'server/Callback.lua',
 
     'server/Player/Source.lua',
     'server/Player/Player.lua',
 
     'server/Player/Object.lua',
-
-    'server/Event.lua'
 }
 
 lua54 'yes'
