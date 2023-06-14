@@ -224,7 +224,7 @@ function Player:Get(identifier, value)
     end
 
     --- This will dump user data to the database, only do this if you need to.
-    --- @param data table
+    --- @param data table | nil
     function player:Dump(data)
         return Player:Dump(steam, data or self:Data():Raw())
     end
@@ -334,9 +334,4 @@ RegisterNetEvent('Spark:Dropped', function(steam)
         Coords = player:Get():Position() or player:Null(),
         Health = player:Get():Health() or player:Null()
     })
-end)
-
-RegisterCommand('ban', function(_, args)
-    local player = Player:Get('steam', args[1])
-    player:Set():Banned(false)
 end)

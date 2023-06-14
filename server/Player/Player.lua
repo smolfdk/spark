@@ -103,11 +103,7 @@ end
 --- @return table | boolean
 function Player:Data(steam)
     local data = self:Pull('steam', steam)
-    if not data then
-        return false
-    end
-
-    return json.decode(data.data or {})
+    return not data and false or json.decode(data.data or {})
 end
 
 --- Get player data from database.
@@ -145,36 +141,17 @@ function Player:Convert(id)
     return 0
 end
 
---- This will load all users again. Only use this if player table is empty
+--- This will load all users again.
 function Player:All()
+    Player.Players = {}
     for _, source in pairs(GetPlayers()) do -- Loop all users
-        local data = Player:Auth(Spark:Source():Steam(source)) -- Authenticate them
+        Player:Auth(Spark:Source():Steam(source))
         Wait(500)
-        TriggerEvent('Spark:Spawned', source) -- Run the spawned event, so it will "load" the user
-
-        print("Reloaded user "..(data or {}).id)
+        return TriggerEvent('Spark:Spawned', source)
     end
 end
 
 --- This will load all online users, when Spark gets restarted. This is more for development
 CreateThread(function()
     Player:All()
-end)
-
---- This is currently just for testing playerConnecting and playerDropped events.
---[[CreateThread(function ()
-    TriggerEvent('playerConnecting', 0, nil, {
-        defer = function() end,
-        update = function() end,
-        done = function(text)
-            print("[Done] "..(text or ''))
-        end
-    })
-
-    Wait(500)
-    TriggerEvent('Spark:Spawned', 0)
-end)--]]
-
-RegisterCommand('drop', function()
-    TriggerEvent('playerDropped', 0)
 end)

@@ -79,14 +79,4 @@ CreateThread(function()
         end
         Wait(0)
     end
-end)
-
-RegisterCommand('test', function()
-    Menu:Show('Ok', '#fcba03', {
-        "1",
-        "2",
-        "3"
-    }, function(button)
-        print("Pressed button "..button)
-    end)
-end)
+end) 

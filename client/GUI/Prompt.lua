@@ -43,3 +43,4 @@ NUI:Register('Prompt:Submit', function(data)
     Status, Callback = false, nil
     return true
 end)
+

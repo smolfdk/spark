@@ -37,7 +37,7 @@ function Player:Get()
     end
 
     --- Get the player's position
-    --- @return number, number, number
+    --- @return vector3
     function module:Position() return GetEntityCoords(self:Ped()) end
 
     --- Get the distance between the player and a set of coords
