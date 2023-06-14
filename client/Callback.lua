@@ -1,7 +1,7 @@
 -- Callback controller for Spark.
 -- Made and maintained by frackz
 
-local Callback, Player = Spark:Player(), {
+local Player, Callback = Spark:Player(), {
     Callbacks = {},
     Ongoing = {},
     CurrentId = 0

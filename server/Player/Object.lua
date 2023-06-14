@@ -259,7 +259,7 @@ function Player:Get(identifier, value)
             local id = callback:Id()
 
             callback.Ongoing[id] = cb
-            player:Client():Event('Spark:Callback:Client:Run', name, id, ...)
+            self:Event('Spark:Callback:Client:Run', name, id, ...)
         end
 
         return module

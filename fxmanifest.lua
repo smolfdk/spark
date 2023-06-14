@@ -38,6 +38,7 @@ client_scripts {
     'client/Player/Player.lua',
     'client/Player/NUI.lua',
     'client/Player/Keys.lua',
+    'client/Callback.lua',
 
     'client/GUI/Menu.lua',
     'client/GUI/Notify.lua',
