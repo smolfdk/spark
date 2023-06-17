@@ -18,12 +18,7 @@ end
 --- @return number?
 function Version:Newest()
     local success, request = Spark:HTTP():Perform(self.Request, 'GET')
-
-    if not success or not request then
-        return self:Get()
-    end
-
-    return tonumber(request)
+    return (not success or not request) and self:Get() or tonumber(request)
 end
 
 --- Check if the the version is outdated

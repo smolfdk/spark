@@ -18,19 +18,9 @@ function HTTP:Perform(url, method, data, headers)
     local Promise = promise.new()
 
     PerformHttpRequest(url, function (err, data, _)
-        if err ~= 200 then
-            data = err
-        end
-
-        Promise:resolve(data)
+        Promise:resolve(err == 200 and data or err)
     end, method, data or '', headers or {})
 
     local Result = Citizen.Await(Promise) -- Awaits until done
-
-    -- Check if its a error code, and not a response
-    if type(Result) == "number" then
-        return false, Result
-    end
-
-    return true, Result
+    return type(Result) ~= "number", Result
 end

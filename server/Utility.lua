@@ -16,11 +16,7 @@ function Utility:Copy(object, destination)
 
     for k,v in pairs(object) do
         if not destination[k] then
-            if type(v) == "table" then
-                destination[k] = self:Copy(v)
-            else
-                destination[k] = v
-            end
+            destination[k] = type(v) == "table" and self:Copy(v) or v
         end
     end
 
