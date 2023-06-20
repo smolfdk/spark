@@ -2,7 +2,7 @@
 -- Made and maintained by frackz
 
 local Database = {}
-local Query, Execute, Promise = nil, nil, promise.new()
+local Query, Execute, Promise = nil, nil, Spark:Promise()
 
 --- Get the database module
 function Spark:Database()
@@ -16,7 +16,7 @@ exports['Spark']:Connect(Spark:Config():Get('Database'), function(query, execute
     end
 
     Query, Execute = query, execute
-    Promise:resolve() -- Resolve so all waiting queries can run
+    Promise:Resolve() -- Resolve so all waiting queries can run
 end)
 
 --- Execute a query, and get a response from a callback
@@ -41,22 +41,22 @@ end
 
 --- Await for a query to execute, this will return all findings
 --- @param query string
+--- @return table
 function Database:Await(query, ...)
-    local Promise = promise.new()
+    local Promise = Spark:Promise()
 
     self:Query(query, function(result)
         assert(result, "Result is nil, prob a internal error.")
-
-        Promise:resolve(result)
+        Promise:Resolve(result)
     end, ...)
 
-    return Citizen.Await(Promise)
+    return Promise:Await()
 end
 
 --- Execute a query directly
 --- @param query string
 function Database:Execute(query, ...)
-    Citizen.Await(Promise)
+    Promise:Await()
     local args = type(...) == "table" and ... or {...}
 
     local Response = Execute(query, args)

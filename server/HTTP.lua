@@ -15,12 +15,12 @@ end
 --- @param headers table | nil
 --- @return boolean, table | number
 function HTTP:Perform(url, method, data, headers)
-    local Promise = promise.new()
+    local Promise = Spark:Promise()
 
     PerformHttpRequest(url, function (err, data, _)
-        Promise:resolve(err == 200 and data or err)
+        Promise:Resolve(err == 200 and data or err)
     end, method, data or '', headers or {})
 
-    local Result = Citizen.Await(Promise) -- Awaits until done
+    local Result = Promise:Await() -- Awaits until done
     return type(Result) ~= "number", Result
 end

@@ -34,11 +34,10 @@ shared_scripts {
 client_scripts {
     'client/Spark.lua',
     'client/Events.lua',
-    
+
     'client/Player/Player.lua',
     'client/Player/NUI.lua',
     'client/Player/Keys.lua',
-    'client/Callback.lua',
 
     'client/GUI/Menu.lua',
     'client/GUI/Notify.lua',
@@ -48,18 +47,15 @@ client_scripts {
 server_scripts {
     'server/Spark.lua',
     'server/Utility.lua',
+    'server/Promise.lua',
     'server/Config.lua',
     'server/HTTP.lua',
     'server/Version.lua',
-
-    'server/Socket/Socket.js',
-    'server/Socket/Socket.lua',
 
     'server/Database/Database.js',
     'server/Database/Database.lua',
 
     'server/Event.lua',
-    'server/Callback.lua',
 
     'server/Player/Source.lua',
     'server/Player/Player.lua',

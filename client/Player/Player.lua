@@ -107,11 +107,7 @@ function Player:Server()
     --- @param name string
     function module:Callback(name, ...)
         assert(name, "Cannot call a callback with no name :/")
-        local callback = Spark:Callback()
-        local id = callback:Id()
-
-        callback.Ongoing[id] = cb
-        module:Event('Spark:Callback:Server:Run', name, id, ...)
+        
     end
     
     return module
