@@ -12,7 +12,7 @@ function Spark:Source()
 end
 
 --- Get the steam identifier from source
---- @param source number
+--- @param source number | string
 function Source:Steam(source)
     if not source or source == 0 then -- Check if its a debugging account
         return self.Dummy

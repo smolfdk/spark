@@ -103,7 +103,7 @@ end
 --- @return table | boolean
 function Player:Data(steam)
     local data = self:Pull('steam', steam)
-    return not data and false or json.decode(data.data or {})
+    return not data and false or json.decode(data.data or "{}")
 end
 
 --- Get player data from database.

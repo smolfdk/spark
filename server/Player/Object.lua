@@ -196,7 +196,7 @@ function Player:Get(identifier, value)
         function module:Steam() return steam end
 
         --- Get the user's source, this can only be accessed after the player has spawned
-        --- @return number
+        --- @return string
         function module:Source() return (Player:Raw(steam) or {}).source end
 
         --- Get the user's ped, this can only be accessed after the player has spawned
@@ -226,7 +226,7 @@ function Player:Get(identifier, value)
     --- This will dump user data to the database, only do this if you need to.
     --- @param data table | nil
     function player:Dump(data)
-        return Player:Dump(steam, data or self:Data():Raw())
+        return Player:Dump(steam, (data or self:Data():Raw()) or {})
     end
 
     --- Remove the user from the players list
