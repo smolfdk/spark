@@ -4,6 +4,6 @@
 Spark = {}
 
 --- Exports the Spark table
-exports('Spark', function()
+exports('Server', function()
     return Spark
 end)
