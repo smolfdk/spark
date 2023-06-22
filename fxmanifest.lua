@@ -8,6 +8,19 @@ author 'frackz <https://github.com/frackz>'
 description 'A FiveM framework'
 version '1.0.0'
 
+-- Load main files first, so shared modules will be able to load
+server_script 'server/Spark.lua'
+client_script 'client/Spark.lua'
+
+shared_scripts {
+    'shared/Spark.lua',
+    'shared/Utility.lua',
+    'shared/Config.lua',
+    'shared/Promise.lua',
+
+    'shared/Class.lua'
+}
+
 ui_page 'gui/Index.html'
 
 files {
@@ -27,12 +40,7 @@ files {
     'cfg/Keys.lua'
 }
 
-shared_scripts {
-    'cfg/Player.lua'
-}
-
 client_scripts {
-    'client/Spark.lua',
     'client/Events.lua',
 
     'client/Player/Player.lua',
@@ -45,10 +53,6 @@ client_scripts {
 }
 
 server_scripts {
-    'server/Spark.lua',
-    'server/Utility.lua',
-    'server/Promise.lua',
-    'server/Config.lua',
     'server/HTTP.lua',
     'server/Version.lua',
 

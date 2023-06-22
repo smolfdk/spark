@@ -23,7 +23,7 @@ end)
 --- @param query string
 --- @param cb function
 function Database:Query(query, cb, ...)
-    Citizen.Await(Promise) -- Wait for connection to establish
+    Promise:Await() -- Wait for connection to establish
     assert(Query, "Whoops, database not done loading! Cannot execute in the meanwhile")
 
     local Response = Query(query, ...)

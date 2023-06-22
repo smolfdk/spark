@@ -125,8 +125,10 @@ function Player:Get(identifier, value)
         --- Set the health of the player
         --- @param amount number
         function module:Health(amount)
-            amount = amount or 0
-            return SetEntityHealth(player:Get():Ped(), amount)
+            assert(amount,
+                "Cannot set health to nil"
+            )
+            return player:Client():Event('Spark:Client:SetHealth', amount)
         end
 
         --- Set if the user is banned

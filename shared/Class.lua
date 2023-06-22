@@ -1,6 +1,5 @@
 -- Class controller for Spark.
 -- Made and maintained by frackz
-
 local Class = {}
 
 --- Get the class module

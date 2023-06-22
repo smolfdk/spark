@@ -3,6 +3,8 @@
 
 local Utility = {}
 
+print("LOAD UTILTITY (SHARED)")
+
 --- Get the Utility module
 function Spark:Utility()
     return Utility
