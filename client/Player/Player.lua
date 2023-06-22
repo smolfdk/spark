@@ -59,14 +59,18 @@ function Player:Set()
     --- Set the player's armor
     --- @param amount number
     function module:Armor(amount)
-        amount = amount or 0
+        assert(health,
+            "Trying to set player's armor to nil"
+        )
         return SetPedArmour(Player:Get():Ped(), amount)
     end
 
     --- Set the player's health
     --- @param amount number
     function module:Health(amount)
-        amount = amount or 0
+        assert(health,
+            "Trying to set player's health to nil"
+        )
         return SetEntityHealth(Player:Get():Ped(), amount)
     end
 
@@ -85,7 +89,9 @@ function Player:Set()
     --- Get the player's heading
     --- @param heading number
     function module:Heading(heading)
-        heading = heading or 0
+        assert(heading,
+            "Trying to change player's heading with nil"
+        )
         return SetEntityHeading(Player:Get():Ped(), heading)
     end
 
@@ -107,7 +113,6 @@ function Player:Server()
     --- @param name string
     function module:Callback(name, ...)
         assert(name, "Cannot call a callback with no name :/")
-        
     end
     
     return module
