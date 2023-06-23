@@ -23,13 +23,13 @@ end
 --- @param key string
 --- @return boolean
 function Keys:Pressed(key)
-    assert(self:Get(key), "Key "..tostring(key).." does not exist.")
     return IsControlJustPressed(1, self:Get(key))
 end
 
 --- Get the key's control id
 --- @param key string
---- @return number | nil
+--- @return number
 function Keys:Get(key)
+    assert(self.Keys[key], "Key "..key.." does not exist!")
     return self.Keys[key]
 end
