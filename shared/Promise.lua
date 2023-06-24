@@ -15,11 +15,6 @@ function Spark:Promise()
         return promise:reject(...)
     end
 
-    --- Get function called when promise is resolved / rejected
-    function module:Next(...)
-        return promise:next(...)
-    end
-
     --- Wait for the promise to get resolved / rejected, and get the response.
     function module:Await()
         return Citizen.Await(promise)
