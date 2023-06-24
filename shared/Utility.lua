@@ -3,8 +3,6 @@
 
 local Utility = {}
 
-print("LOAD UTILTITY (SHARED)")
-
 --- Get the Utility module
 function Spark:Utility()
     return Utility
@@ -29,4 +27,8 @@ end
 --- @return string
 function Utility:Resource()
     return GetCurrentResourceName()
+end
+
+function Utility:State()
+    return GetResourceState(self:Resource())
 end

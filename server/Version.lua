@@ -20,14 +20,3 @@ function Version:Newest()
     local success, request = Spark:HTTP():Perform(self.Request, 'GET')
     return (not success or not request) and self:Get() or tonumber(request)
 end
-
---- Check if the the version is outdated
-CreateThread(function()
-    -- Check if its a outdated version
-    assert(Version:Newest() == Version:Get(),
-        "This version is outdated! Please download the new version"
-    )
-
-    -- Prints that its the newest
-    print("You are up-to-date!")
-end)

@@ -14,6 +14,7 @@ client_script 'client/Spark.lua'
 
 shared_scripts {
     'shared/Spark.lua',
+    'shared/Debug.lua',
     'shared/Utility.lua',
     'shared/Config.lua',
     'shared/Promise.lua',
