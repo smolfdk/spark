@@ -16,7 +16,7 @@ end
 
 function Menu:Show(title, color, data, callback)
     assert(not Open, "Cannot open a menu if its already open")
-    assert(type(callback) == "function" or type(callback) == "table", "Callback is not a function")
+    assert(type(callback) == "function" or type(callback) == "table" and callback.__cfx_functionReference, "Callback is not a function")
 
     Open, Callback, Index, Data, Color = true, callback, 1, data, color
     return NUI:Send({
