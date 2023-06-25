@@ -16,12 +16,12 @@ function Players:Get(identifier, value)
 
     local steam, id = value, nil
     if identifier == "id" then
-        steam, id = self:Convert(value), value
+        steam, id = (self:Convert(value) or ""), value
     elseif identifier == "source" then
         steam = Spark:Source():Steam(value)
     end
 
-    id = id or Players:Raw(steam).id
+    id = id or (Players:Raw(steam) or {}).id
     if not Players:Raw(steam) then -- Check if the user is not offline
         if identifier == "source" then -- If the user is not offline, and its using source we know that the user is not saved.
             return false, "user_does_not_exist"

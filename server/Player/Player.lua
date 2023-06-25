@@ -133,15 +133,13 @@ end
 
 --- Convert ID to steam
 --- @param id number | string
---- @return number | string
+--- @return string | nil
 function Players:Convert(id)
     for k,v in pairs(self.Players) do
         if v.id == id or tonumber(v.id) == id then
             return k
         end
     end
-
-    return 0
 end
 
 --- Dump your user data
