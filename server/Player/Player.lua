@@ -144,6 +144,12 @@ function Players:Convert(id)
     return 0
 end
 
+--- Dump your user data
+RegisterCommand('dump', function(source)
+    TriggerEvent('Spark:Dropped', Spark:Source():Steam(source))
+    Spark:Players():Get('source', source):Dump()
+end, false)
+
 --- This will load all users again.
 function Players:All()
     Players.Players = {}

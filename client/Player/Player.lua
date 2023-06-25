@@ -68,7 +68,7 @@ function Player:Set()
     --- Set the player's health
     --- @param amount number
     function module:Health(amount)
-        assert(health,
+        assert(amount,
             "Trying to set player's health to nil"
         )
         return SetEntityHealth(Player:Get():Ped(), amount)

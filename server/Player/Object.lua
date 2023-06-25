@@ -229,6 +229,58 @@ function Players:Get(identifier, value)
         return module
     end
 
+    --- Get the cash module
+    function player:Cash()
+        local module = {}
+
+        --- Get the amount of cash the user has
+        --- @return number
+        function Cash:Get()
+            return player:Data():Get('Cash') or 0
+        end
+
+        --- Set the amount of cash the user has
+        --- @param amount number
+        --- @return boolean
+        function Cash:Set(amount)
+            assert(type(amount) == "number", "Cannot set cash to a non-number")
+            return player:Data():Set('Cash', amount)
+        end
+
+        --- Add a amount to the user's cash
+        --- @param amount number
+        --- @return boolean
+        function Cash:Add(amount)
+            assert(type(amount) == "number", "Cannot add cash to a non-number")
+            return self:Set(self:Get() + amount)
+        end
+
+        --- Remove a amount of cash from the user
+        --- @param amount number
+        --- @return boolean
+        function Cash:Remove(amount)
+            assert(type(amount) == "number", "Cannot remove cash from a non-number")
+            return self:Set(self:Get() - amount)
+        end
+        
+        --- Check if the user has a amount of cash
+        --- @param amount number
+        --- @return boolean
+        function Cash:Has(amount)
+            assert(type(amount) == "number", "Cannot check if user has a non-number of cash")
+            return self:Get() >= amount
+        end
+
+        --- Make a payment, will return true if it went trought, and falso not.
+        --- @param amount number
+        --- @return boolean
+        function Cash:Payment(amount)
+            return self:Has(amount) and self:Remove(amount) or false
+        end
+
+        return module
+    end
+
     --- This will dump user data to the database, only do this if you need to.
     --- @param data table | nil
     function player:Dump(data)
