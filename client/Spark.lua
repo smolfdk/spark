@@ -2,6 +2,6 @@
 -- Made and maintained by frackz
 
 --- Exports the Spark table
-exports('Spark', function()
+exports('Client', function()
     return Spark
 end)

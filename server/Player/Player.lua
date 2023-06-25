@@ -98,7 +98,7 @@ function Players:Dump(steam, data)
     assert(data, "User is nil while trying to dump it? Please report this.")
 
     -- Update user data to the database
-    Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data), steam)
+    Spark:Database():Execute('UPDATE users SET data = ? WHERE steam = ?', json.encode(data, {indent=true}), steam)
 end
 
 --- Get user data by steam from the database

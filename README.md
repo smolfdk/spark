@@ -5,7 +5,7 @@ A FiveM-framework, currently in work-in-progress. That goes for a more simplifie
 Spark uses player objects, to very easily get access to all available users functions.
 All functions which does not require the user's ped to be used, can be triggered when the user is offline.
 ```lua
-local Spark = exports["Spark"]:Spark()
+local Spark = exports["Server"]:Spark()
 
 local User = 
 Spark:Players():Get('id', 1 or '1') -- Get user from ID
