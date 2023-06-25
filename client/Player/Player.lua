@@ -3,7 +3,7 @@
 
 local Player = {}
 
---- Get the HTTP module
+--- Get the Player module
 function Spark:Player()
     return Player
 end

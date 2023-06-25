@@ -17,11 +17,22 @@ AddEventHandler('onResourceStart', function(resource)
 
     if Spark:Version():Get() ~= Spark:Version():Newest() then
         return Spark:Debug():Error(
-            'You are not up to date. Please update to the newest version.'
+            'You are not up to date. Please update to the newest version!'
         )
     end
 
-    Spark:Debug():Success(
-        "You are up to date."
+    Spark:Debug():Print('📚',
+        "You are up to date!"
+    )
+
+    local err = Spark:Database():Error()
+    if err then
+        return Spark:Debug():Error(
+            "Database connection failed! "..err
+        )
+    end
+
+    Spark:Debug():Print('💻',
+        "Database connection established!"
     )
 end)

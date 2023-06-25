@@ -1,10 +1,10 @@
 -- Player controller and handler for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Config():Get('Player')
+local Player = Spark:Config():Get('Players')
 
 --- Get the player module
-function Spark:Player()
+function Spark:Players()
     return Player
 end
 

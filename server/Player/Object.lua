@@ -1,7 +1,7 @@
 -- Player object controller for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Player()
+local Player = Spark:Players()
 local Identifiers, Config = {
     steam = true,
     source = true,

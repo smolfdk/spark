@@ -25,7 +25,7 @@ function Event:Handle(name, callback)
     AddEventHandler(name, function(...)
         local player, source = nil, source
         if source ~= "" then
-            player = Spark:Player():Get('source', source)
+            player = Spark:Players():Get('source', source)
         end
 
         pcall(function(...)

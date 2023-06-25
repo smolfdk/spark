@@ -2,7 +2,7 @@
 -- Made and maintained by frackz
 
 local Database = {}
-local Query, Execute, Promise = nil, nil, Spark:Promise()
+local Query, Execute, Promise, Error = nil, nil, Spark:Promise(), nil
 
 --- Get the database module
 function Spark:Database()
@@ -12,7 +12,8 @@ end
 --- Connect to the Database
 exports['Spark']:Connect(Spark:Config():Get('Database'), function(query, execute)
     if type(query) == "string" or type(execute) == "string" then
-        return error("Error when tried to connect to database! "..query)
+        Error = query
+        return
     end
 
     Query, Execute = query, execute
@@ -64,4 +65,9 @@ function Database:Execute(query, ...)
 
     assert(not Message, "Error while executing query, message: "..tostring(Message))
     return Response.result, Response.fields
+end
+
+--- Get the current database-connection error (if there is one)
+function Database:Error()
+    return Error
 end
