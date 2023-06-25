@@ -183,6 +183,6 @@ end)
 
 CreateThread(function()
     local quit = Spark:Players():Debug(0) -- Spawn a debug account
-    Wait(1000)
+    Wait(100)
     quit()
 end)

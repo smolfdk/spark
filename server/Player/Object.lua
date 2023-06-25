@@ -251,18 +251,18 @@ function Players:Get(identifier, value)
 
         --- Add a amount to the user's cash
         --- @param amount number
-        --- @return boolean
+        --- @return boolean, nil
         function module:Add(amount)
             assert(type(amount) == "number", "Cannot add cash to a non-number")
-            return self:Set(self:Get() + amount)
+            return true, self:Set(self:Get() + amount)
         end
 
         --- Remove a amount of cash from the user
         --- @param amount number
-        --- @return boolean
+        --- @return boolean, nil
         function module:Remove(amount)
             assert(type(amount) == "number", "Cannot remove cash from a non-number")
-            return self:Set(self:Get() - amount)
+            return true, self:Set(self:Get() - amount)
         end
 
         --- Check if the user has a amount of cash
