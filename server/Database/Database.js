@@ -9,7 +9,7 @@ global.exports('Connect', (options, response) => {
     connection.getConnection((err, con) => {
         if (err) return invoke(response, err.code)
 
-        // Return the "execute query" function back to lua
+        // Return the "execute, query" function back to lua
         invoke(response, (sql, params) => {
             return new Promise((res, rej) => con.query(sql, params, (error, result) => {
                 if (error) return rej(error)

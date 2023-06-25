@@ -31,8 +31,8 @@ AddEventHandler('playerConnecting', function(_, __, def)
 
     Wait(0)
     def.update("You are now logged in as ID: "..data.id) -- Report to the user that they are now logged in
-    Spark:Debug():Print('⛹️',
-        "User joined! Steam "..steam..", ID "..data.id..", Data: "..data.data
+    Spark:Debug():Print('👨',
+        "User joined! ID '"..data.id.."', Steam '"..steam.."'"
     )
 
     TriggerEvent('Spark:Connect', steam, def)
@@ -55,8 +55,9 @@ AddEventHandler('playerDropped', function(reason)
     TriggerEvent('Spark:Dropped', steam)
 
     -- Informs us that the user is left, and is getting saved
-    print("User dropped with ID "..data.id.." steam "..steam.." and reason "..reason)
-    print("The saved data is: "..json.encode(data.data))
+    Spark:Debug():Print('🚪',
+        "User left! ID '"..data.id.."', Steam: '"..steam.."', Source '"..data.source.."'"
+    )
 
     Players:Dump(steam, data.data) -- This will dump their data into the database.
     Players.Players[steam] = nil -- This will remove them for the players list

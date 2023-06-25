@@ -19,6 +19,7 @@ function Players:Get(identifier, value)
         steam = Spark:Source():Steam(value)
     end
 
+    id = id or Players:Raw(steam).id
     if not Players:Raw(steam) then -- Check if the user is not offline
         if identifier == "source" then -- If the user is not offline, and its using source we know that the user is not saved.
             return false, "user_does_not_exist"
@@ -297,7 +298,9 @@ RegisterNetEvent('Spark:Spawned', function(_)
     assert(player:Is():Online(), "Player what spawned is not online?")
     assert(player:Get():Source() == nil, "User spawned but is dead or already spawned")
 
-    print("Player spawned, now updating source")
+    Spark:Debug():Print('📝',
+        "User spawned! ID '"..player:Get():ID().."', Steam '"..player:Get():Steam().."', Source '"..source.."'"
+    )
     Players.Players[player:Get():Steam()].source = source -- Sets the source (needs changing prob)
 
     -- Inform all that the user is ready to be edited ;)
@@ -305,7 +308,7 @@ RegisterNetEvent('Spark:Spawned', function(_)
 
     -- Check if it is a debug account, and therefor has no ped to update.
     if player:Is():Debug() then
-        return print("Debug account spawned")
+        return
     end
 
     -- Update player information / like position, and health.
@@ -328,7 +331,7 @@ RegisterNetEvent('Spark:Dropped', function(steam)
 
     -- Check if it is a debug account, and therefor has no ped data to extract.
     if player:Is():Debug() or not player:Is():Loaded() then
-        return print("Dropped player is a debugging account - or is not loaded.")
+        return
     end
 
     player:Data():Extend({ -- Edit the data table
