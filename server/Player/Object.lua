@@ -8,7 +8,9 @@ local Identifiers, Config = {
     id = true
 }, Spark:Config():Get('Server')
 
---- Get a player by source, id or steam
+--- Get the player-object of a player. Using either steam, source, or id
+--- @param identifier "steam" | "source" | "id"
+---@param value string
 function Players:Get(identifier, value)
     assert(Identifiers[identifier], "Identifier "..(value or 'Invalid').." does not exist.")
 

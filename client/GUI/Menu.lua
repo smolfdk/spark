@@ -32,7 +32,7 @@ end
 
 function Menu:Close()
     assert(Open, "Cannot close the menu if its closed")
-    
+
     Open, Callback = false, nil
     return NUI:Send({
         type = "menu",
