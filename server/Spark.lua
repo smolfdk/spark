@@ -2,7 +2,7 @@
 -- Made and maintained by frackz
 
 --- Exports the Spark table
-exports('Server', function()
+exports('Spark', function()
     return Spark
 end)
 
