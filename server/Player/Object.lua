@@ -1,7 +1,7 @@
 -- Player object controller for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Players()
+local Players = Spark:Players()
 local Identifiers, Config = {
     steam = true,
     source = true,
@@ -9,7 +9,7 @@ local Identifiers, Config = {
 }, Spark:Config():Get('Server')
 
 --- Get a player by source, id or steam
-function Player:Get(identifier, value)
+function Players:Get(identifier, value)
     assert(Identifiers[identifier], "Identifier "..(value or 'Invalid').." does not exist.")
 
     local steam, id = value, nil
@@ -19,12 +19,12 @@ function Player:Get(identifier, value)
         steam = Spark:Source():Steam(value)
     end
 
-    if not Player:Raw(steam) then -- Check if the user is not offline
+    if not Players:Raw(steam) then -- Check if the user is not offline
         if identifier == "source" then -- If the user is not offline, and its using source we know that the user is not saved.
             return false, "user_does_not_exist"
         end
 
-        local data = Player:Pull(identifier, value)
+        local data = Players:Pull(identifier, value)
         if not data then -- Check if the user cannot be found in the database.
             return false, "user_cannot_be_found"
         end
@@ -43,14 +43,14 @@ function Player:Get(identifier, value)
         --- Get the whole data table
         --- @return table | nil
         function module:Raw()
-            return (Player:Raw(steam) or {})['data']
+            return (Players:Raw(steam) or {})['data']
         end
 
         --- Get a key from the data table
         --- @param key string
         function module:Get(key)
             if not player:Is():Online() then -- If the user is online, we use database.
-                local user = Player:Data(steam)
+                local user = Players:Data(steam)
                 assert(user, "User does not exist?")
 
                 return user[key]
@@ -76,7 +76,7 @@ function Player:Get(identifier, value)
         --- @param data table
         function module:Extend(data)
             if not player:Is():Online() then -- If the user is online, we use database.
-                local user = Player:Data(steam) -- Pull data from database
+                local user = Players:Data(steam) -- Pull data from database
                 assert(user, "User does not exist?")
                 assert(type(user) == "table", "Saved data is not a table?")
 
@@ -119,6 +119,9 @@ function Player:Get(identifier, value)
         --- @param y number
         --- @param z number
         function module:Position(x, y, z)
+            assert(x and y and z,
+                "Position arguments not set"
+            )
             return SetEntityCoords(player:Get():Ped(), x, y, z, false, false, false, false)
         end
 
@@ -199,7 +202,7 @@ function Player:Get(identifier, value)
 
         --- Get the user's source, this can only be accessed after the player has spawned
         --- @return string
-        function module:Source() return (Player:Raw(steam) or {}).source end
+        function module:Source() return (Players:Raw(steam) or {}).source end
 
         --- Get the user's ped, this can only be accessed after the player has spawned
         --- @return number
@@ -228,12 +231,12 @@ function Player:Get(identifier, value)
     --- This will dump user data to the database, only do this if you need to.
     --- @param data table | nil
     function player:Dump(data)
-        return Player:Dump(steam, (data or self:Data():Raw()) or {})
+        return Players:Dump(steam, (data or self:Data():Raw()) or {})
     end
 
     --- Remove the user from the players list
     function player:Exile()
-        Player.Players[self:Get():Steam()] = nil
+        Players.Players[self:Get():Steam()] = nil
     end
 
     --- Use this instead of "nil" in your tables, if you use :Data():Extend()
@@ -270,7 +273,7 @@ end
 RegisterNetEvent('Spark:Connect', function(steam, def)
     assert(source == "", "A user tried using the connect event from the client.")
 
-    local player = Player:Get('steam', steam)
+    local player = Players:Get('steam', steam)
     if player:Is():Banned() then -- Check if the user is banned
         return def.done("You are banned for: ".. (player:Get():Ban() or 'No reason set')), player:Exile()
     end
@@ -285,7 +288,7 @@ end)
 --- When the player has spawned, this is important for getting their source.
 RegisterNetEvent('Spark:Spawned', function(_)
     local source = (source == "") and _ or source
-    local player = Player:Get('source', source)
+    local player = Players:Get('source', source)
 
     -- Check if the player is unreachable
     assert(player, "The user that spawned is currently unreachable")
@@ -295,7 +298,7 @@ RegisterNetEvent('Spark:Spawned', function(_)
     assert(player:Get():Source() == nil, "User spawned but is dead or already spawned")
 
     print("Player spawned, now updating source")
-    Player.Players[player:Get():Steam()].source = source -- Sets the source (needs changing prob)
+    Players.Players[player:Get():Steam()].source = source -- Sets the source (needs changing prob)
 
     -- Inform all that the user is ready to be edited ;)
     TriggerEvent('Spark:Ready', player:Get():Steam())
@@ -321,7 +324,7 @@ end)
 RegisterNetEvent('Spark:Dropped', function(steam)
     assert(source == "", "A user tried using the dropped event from the client.")
 
-    local player = Player:Get('steam', steam)
+    local player = Players:Get('steam', steam)
 
     -- Check if it is a debug account, and therefor has no ped data to extract.
     if player:Is():Debug() or not player:Is():Loaded() then

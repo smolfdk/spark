@@ -42,11 +42,11 @@ files {
 }
 
 client_scripts {
-    'client/Events.lua',
-
     'client/Player/Player.lua',
     'client/Player/NUI.lua',
     'client/Player/Keys.lua',
+
+    'client/Events.lua',
 
     'client/GUI/Menu.lua',
     'client/GUI/Notify.lua',

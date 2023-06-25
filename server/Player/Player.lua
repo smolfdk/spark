@@ -1,11 +1,11 @@
 -- Player controller and handler for Spark.
 -- Made and maintained by frackz
 
-local Player = Spark:Config():Get('Players')
+local Players = Spark:Config():Get('Players')
 
 --- Get the player module
 function Spark:Players()
-    return Player
+    return Players
 end
 
 --- Register the user when they are joining
@@ -22,7 +22,7 @@ AddEventHandler('playerConnecting', function(_, __, def)
     end
 
     def.update("Checking your data...")
-    local data = Player:Auth(steam) -- Authenticate the player by steam
+    local data = Players:Auth(steam) -- Authenticate the player by steam
 
     -- This will check if the returned data is valid
     if not (data or {}).id then
@@ -31,7 +31,9 @@ AddEventHandler('playerConnecting', function(_, __, def)
 
     Wait(0)
     def.update("You are now logged in as ID: "..data.id) -- Report to the user that they are now logged in
-    print("User logged in with steam "..steam..", id "..data.id.." and with data: "..data.data)
+    Spark:Debug():Print('⛹️',
+        "User joined! Steam "..steam..", ID "..data.id..", Data: "..data.data
+    )
 
     TriggerEvent('Spark:Connect', steam, def)
 end)
@@ -44,7 +46,7 @@ AddEventHandler('playerDropped', function(reason)
     -- Check if the user has a steam identifier (if this happens, a big bug have happend)
     assert(steam, "A user dropped, but no steam identifier is found. Please report this.")
 
-    local data = Player:Raw(steam)
+    local data = Players:Raw(steam)
 
     -- This will check if the user is registered
     assert(data, "User dropped without being registered, please report this.")
@@ -56,14 +58,14 @@ AddEventHandler('playerDropped', function(reason)
     print("User dropped with ID "..data.id.." steam "..steam.." and reason "..reason)
     print("The saved data is: "..json.encode(data.data))
 
-    Player:Dump(steam, data.data) -- This will dump their data into the database.
-    Player.Players[steam] = nil -- This will remove them for the players list
+    Players:Dump(steam, data.data) -- This will dump their data into the database.
+    Players.Players[steam] = nil -- This will remove them for the players list
 end)
 
 --- Authenticate a user by steam
 --- @param steam string
 --- @return table
-function Player:Auth(steam)
+function Players:Auth(steam)
     local data = self:Pull('steam', steam)
 
     -- If the user does not already exist, this will make create the player.
@@ -91,7 +93,7 @@ end
 --- Dump user data into the database
 --- @param steam string
 --- @param data table
-function Player:Dump(steam, data)
+function Players:Dump(steam, data)
     assert(data, "User is nil while trying to dump it? Please report this.")
 
     -- Update user data to the database
@@ -101,7 +103,7 @@ end
 --- Get user data by steam from the database
 --- @param steam string
 --- @return table | boolean
-function Player:Data(steam)
+function Players:Data(steam)
     local data = self:Pull('steam', steam)
     return not data and false or json.decode(data.data or "{}")
 end
@@ -110,28 +112,28 @@ end
 --- @param qoute string
 --- @param steam string
 --- @return table
-function Player:Pull(qoute, steam)
+function Players:Pull(qoute, steam)
     return Spark:Database():First('SELECT * FROM users WHERE '..qoute..' = ?', steam)
 end
 
 --- Check if a user is registered
 --- @param steam string
 --- @return boolean
-function Player:Exist(steam)
+function Players:Exist(steam)
     return self:Pull('steam', steam) ~= nil
 end
 
 --- Get the raw data of a user, this will contain the player table
 --- @param steam string
 --- @return table
-function Player:Raw(steam)
+function Players:Raw(steam)
     return self.Players[steam]
 end
 
 --- Convert ID to steam
 --- @param id number | string
 --- @return number | string
-function Player:Convert(id)
+function Players:Convert(id)
     for k,v in pairs(self.Players) do
         if v.id == id or tonumber(v.id) == id then
             return k
@@ -142,10 +144,10 @@ function Player:Convert(id)
 end
 
 --- This will load all users again.
-function Player:All()
-    Player.Players = {}
+function Players:All()
+    Players.Players = {}
     for _, source in pairs(GetPlayers()) do -- Loop all users
-        Player:Auth(Spark:Source():Steam(source))
+        Players:Auth(Spark:Source():Steam(source))
         Wait(500)
         return TriggerEvent('Spark:Spawned', source)
     end
@@ -153,5 +155,5 @@ end
 
 --- This will load all online users, when Spark gets restarted. This is more for development
 CreateThread(function()
-    Player:All()
+    Players:All()
 end)
