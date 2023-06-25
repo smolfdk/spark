@@ -237,14 +237,14 @@ function Players:Get(identifier, value)
 
         --- Get the amount of cash the user has
         --- @return number
-        function Cash:Get()
+        function module:Get()
             return player:Data():Get('Cash') or 0
         end
 
         --- Set the amount of cash the user has
         --- @param amount number
         --- @return boolean
-        function Cash:Set(amount)
+        function module:Set(amount)
             assert(type(amount) == "number", "Cannot set cash to a non-number")
             return player:Data():Set('Cash', amount)
         end
@@ -252,7 +252,7 @@ function Players:Get(identifier, value)
         --- Add a amount to the user's cash
         --- @param amount number
         --- @return boolean
-        function Cash:Add(amount)
+        function module:Add(amount)
             assert(type(amount) == "number", "Cannot add cash to a non-number")
             return self:Set(self:Get() + amount)
         end
@@ -260,15 +260,15 @@ function Players:Get(identifier, value)
         --- Remove a amount of cash from the user
         --- @param amount number
         --- @return boolean
-        function Cash:Remove(amount)
+        function module:Remove(amount)
             assert(type(amount) == "number", "Cannot remove cash from a non-number")
             return self:Set(self:Get() - amount)
         end
-        
+
         --- Check if the user has a amount of cash
         --- @param amount number
         --- @return boolean
-        function Cash:Has(amount)
+        function module:Has(amount)
             assert(type(amount) == "number", "Cannot check if user has a non-number of cash")
             return self:Get() >= amount
         end
@@ -276,7 +276,7 @@ function Players:Get(identifier, value)
         --- Make a payment, will return true if it went trought, and falso not.
         --- @param amount number
         --- @return boolean
-        function Cash:Payment(amount)
+        function module:Payment(amount)
             return self:Has(amount) and self:Remove(amount) or false
         end
 

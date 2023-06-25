@@ -142,12 +142,6 @@ function Players:Convert(id)
     end
 end
 
---- Dump your user data
-RegisterCommand('dump', function(source)
-    TriggerEvent('Spark:Dropped', Spark:Source():Steam(source))
-    Spark:Players():Get('source', source):Dump()
-end, false)
-
 --- This will load all users again.
 function Players:All()
     Players.Players = {}
@@ -158,7 +152,37 @@ function Players:All()
     end
 end
 
+--- Create a debug-account
+--- @param source number
+--- @return function
+function Players:Debug(source)
+    TriggerEvent('playerConnecting', source, {}, {
+        defer = function () end,
+        done = function () end,
+        update = function () end
+    })
+
+    Wait(300)
+    TriggerEvent('Spark:Spawned', source)
+
+    return function()
+        TriggerEvent('playerDropped', source)
+    end
+end
+
+--- Dump your user data
+RegisterCommand('dump', function(source)
+    TriggerEvent('Spark:Dropped', Spark:Source():Steam(source))
+    Spark:Players():Get('source', source):Dump()
+end, false)
+
 --- This will load all online users, when Spark gets restarted. This is more for development
 CreateThread(function()
     Players:All()
+end)
+
+CreateThread(function()
+    local quit = Spark:Players():Debug(0) -- Spawn a debug account
+    Wait(1000)
+    quit()
 end)
