@@ -14,7 +14,7 @@ Spark:Players():Get('source', 1) -- Get user from source
 ```
 
 ### Easy data saving
-Spark has a inbuilt database, and a very easy key-value player data system.
+Spark has a built-in database, and a very easy key-value player data system.
 This data will save, so no need to worry. This can also be ran even if the user is offline.
 ```lua
 User:Data():Set('Test', 1)
